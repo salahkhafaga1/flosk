@@ -1,3 +1,15 @@
+---
+title: Flosk Energy Detector
+emoji: ⚡
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
+# Flosk Project
+مشروع الكشف عن الأعطال في الطاقة الكهربائية باستخدام الذكاء الاصطناعي.
 # Smart Home Energy Monitoring System
 
 > **Version:** 3.0 — B2C SaaS with RTL Arabic Support  
