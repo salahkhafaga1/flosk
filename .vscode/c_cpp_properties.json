@@ -1,0 +1,37 @@
+// ⚠️  IMPORTANT: This file uses safe defaults to prevent PowerShell errors.
+//     Run scripts/setup_vscode_esp32.ps1 after installing the ESP32 Arduino core
+//     to auto-generate exact versioned paths. Or use PlatformIO (platformio.ini)
+//     to avoid manual path management entirely.
+{
+  "configurations": [
+    {
+      "name": "ESP32 Arduino",
+      "includePath": [
+        "${workspaceFolder}/**",
+        // The paths below require the ESP32 Arduino core to be installed.
+        // If you see red squiggles on #include <WiFi.h>, either:
+        //   1) Run scripts/setup_vscode_esp32.ps1 (PowerShell 5.1 compatible)
+        //   2) Switch to PlatformIO (recommended — zero path config needed)
+        "C:/Users/DELL/AppData/Local/Arduino15/packages/esp32/hardware/esp32/*/cores/esp32/**",
+        "C:/Users/DELL/AppData/Local/Arduino15/packages/esp32/hardware/esp32/*/libraries/**",
+        "C:/Users/DELL/AppData/Local/Arduino15/packages/esp32/hardware/esp32/*/tools/sdk/include/**",
+        "C:/Users/DELL/Documents/Arduino/libraries/**"
+      ],
+      "defines": [
+        "ARDUINO=10800",
+        "ESP32",
+        "CORE_DEBUG_LEVEL=0"
+      ],
+      // compilerPath is intentionally left empty until the ESP32 toolchain is installed.
+      // The wildcard path below causes PowerShell 5.1 parser errors (|| is unsupported).
+      // "compilerPath": "C:/Users/DELL/AppData/Local/Arduino15/packages/esp32/tools/xtensa-esp32-elf-gcc/YOUR_GCC_VERSION/bin/xtensa-esp32-elf-gcc.exe",
+      "compilerPath": "",
+      "cStandard": "c11",
+      "cppStandard": "c++11",
+      "intelliSenseMode": "gcc-x64",
+      "forcedInclude": []
+    }
+  ],
+  "version": 4
+}
+

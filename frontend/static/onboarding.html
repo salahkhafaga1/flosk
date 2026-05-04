@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="onb-title">إعداد الأجهزة - فلوسك</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { cairo: ['Cairo', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe',
+                            300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1',
+                            600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .glass-card {
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+        :is(.dark .glass-card) {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+        }
+        :is(html:not(.dark) .glass-card) {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(226, 232, 240, 1);
+        }
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        :is(.dark .input-field) { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); }
+        :is(html:not(.dark) .input-field) { background: rgba(248, 250, 252, 0.8); border: 1px solid rgba(203, 213, 225, 1); color: #0f172a; }
+        .input-field:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            outline: none;
+        }
+        .appliance-tag {
+            transition: all 0.2s ease;
+        }
+        :is(.dark .appliance-tag) { background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); }
+        :is(html:not(.dark) .appliance-tag) { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(226, 232, 240, 1); }
+        .appliance-tag:hover {
+            background: rgba(99, 102, 241, 0.25);
+            transform: translateY(-1px);
+        }
+        .priority-high { border-color: #ef4444; background: rgba(239, 68, 68, 0.15); }
+        .priority-medium { border-color: #eab308; background: rgba(234, 179, 8, 0.15); }
+        .priority-low { border-color: #22c55e; background: rgba(34, 197, 94, 0.15); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide-up {
+            animation: slideUp 0.5s ease forwards;
+        }
+        .wattage-edit {
+            background: transparent;
+            border: none;
+            text-align: center;
+            width: 70px;
+            font-family: 'Cairo', sans-serif;
+            border-bottom: 1px dashed rgba(99, 102, 241, 0.5);
+        }
+        :is(.dark .wattage-edit) { color: #a5b4fc; }
+        :is(html:not(.dark) .wattage-edit) { color: #4f46e5; border-bottom-color: rgba(99, 102, 241, 0.3); }
+        }
+        .wattage-edit:focus {
+            outline: none;
+            border-bottom-color: #6366f1;
+        }
+        .summary-card { transition: all 0.3s ease; }
+        :is(.dark .summary-card) { background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%); border: 1px solid rgba(99, 102, 241, 0.2); }
+        :is(html:not(.dark) .summary-card) { background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%); border: 1px solid rgba(99, 102, 241, 0.1); }
+        
+        .empty-state { transition: all 0.3s ease;
+            border: 2px dashed rgba(99, 102, 241, 0.2);
+        }
+        :is(.dark .empty-state) { background: rgba(15, 23, 42, 0.4); }
+        :is(html:not(.dark) .empty-state) { background: rgba(248, 250, 252, 0.6); }
+    </style>
+<script src="/static/lang.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white min-h-screen transition-colors duration-300">
+
+    <!-- Header -->
+    <nav class="border-b border-slate-200 dark:border-slate-800/50 backdrop-blur-xl bg-white/80 dark:bg-slate-950/80 sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-purple-600 rounded-xl flex items-center justify-center text-xl shadow-lg shadow-brand-500/30">⚡</div>
+                <span class="text-xl font-bold gradient-text" data-lang-key="hero-h1-brand">فلوسك</span>
+            </a>
+            <div class="hidden lg:flex items-center gap-8 mx-8">
+                <a href="/dashboard" class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-600 dark:hover:text-white transition" data-lang-key="nav-dashboard">لوحة التحكم</a>
+                <a href="/claim" class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-600 dark:hover:text-white transition" data-lang-key="nav-connect">ربط الجهاز</a>
+                <a href="/onboarding" class="text-sm font-bold text-slate-900 dark:text-white border-b-2 border-brand-500 pb-1" data-lang-key="nav-appliances">الأجهزة</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="Theme.toggle()" class="flsk-theme-btn text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-white text-lg transition" title="تبديل المظهر">☀️</button>
+                <button onclick="Lang.set(Lang.get()==='ar'?'en':'ar')" id="flsk-lang-btn" class="text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-white text-xs font-bold transition">🌐 EN</button>
+                <div class="h-4 w-px bg-slate-700/50"></div>
+                <span id="user-email" class="text-slate-500 dark:text-slate-400 text-xs font-medium truncate max-w-[150px]">...</span>
+                <button onclick="logout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg text-xs font-bold transition" data-lang-key="logout-btn">خروج</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-5xl mx-auto px-6 py-12">
+        <!-- Main Content -->
+        <div class="grid lg:grid-cols-5 gap-8">
+            <!-- Left: Appliance Form (3 cols) -->
+            <div class="lg:col-span-3 space-y-6 animate-slide-up">
+                <div>
+                    <h1 class="text-3xl font-bold mb-3" data-lang-key="onb-title">أضف أجهزة منزلك</h1>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed" data-lang-key="onb-sub">
+                        ساعد الذكاء الاصطناعي في تقديم تشخيصات دقيقة بإضافة الأجهزة الكهربائية في منزلك.
+                    </p>
+                </div>
+
+                <!-- Add Appliance Form -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="grid md:grid-cols-12 gap-4 items-end">
+                        <!-- Appliance Select -->
+                        <div class="md:col-span-5">
+                            <label class="block text-slate-600 dark:text-slate-300 text-sm font-semibold mb-2" data-lang-key="onb-select-lbl">اختر الجهاز</label>
+                            <select id="appliance-select" class="input-field w-full px-4 py-3 rounded-xl text-slate-900 dark:text-white text-sm cursor-pointer">
+                                <option value="" data-wattage="0" data-lang-key="onb-select-ph">-- اختر جهازاً --</option>
+                                <optgroup data-lang-label="cat-ac" label="Air Conditioning / تكييف وتبريد">
+                                    <option value="AC 1.5hp" data-wattage="1100" data-lang-key="app-ac-15">تكييف 1.5 حصان</option>
+                                    <option value="AC 2.25hp" data-wattage="1800" data-lang-key="app-ac-225">تكييف 2.25 حصان</option>
+                                    <option value="AC 3hp" data-wattage="2400" data-lang-key="app-ac-3">تكييف 3 حصان</option>
+                                    <option value="Fridge 14ft" data-wattage="180" data-lang-key="app-fridge-14">ثلاجة 14 قدم</option>
+                                    <option value="Fridge 16ft" data-wattage="200" data-lang-key="app-fridge-16">ثلاجة 16 قدم</option>
+                                    <option value="Fridge 18ft" data-wattage="250" data-lang-key="app-fridge-18">ثلاجة 18 قدم</option>
+                                    <option value="Freezer" data-wattage="200" data-lang-key="app-freezer">فريزر</option>
+                                </optgroup>
+                                <optgroup data-lang-label="cat-heat" label="Heaters / سخانات">
+                                    <option value="Electric Heater" data-wattage="1500" data-lang-key="app-heater-elec">سخان مياه كهربائي</option>
+                                    <option value="Fast Heater" data-wattage="3000" data-lang-key="app-heater-fast">سخان مياه سريع</option>
+                                    <option value="Space Heater" data-wattage="2000" data-lang-key="app-heater-space">دفاية كهربائية</option>
+                                </optgroup>
+                                <optgroup data-lang-label="cat-laundry" label="Laundry / غسيل وتنظيف">
+                                    <option value="Washing Machine" data-wattage="500" data-lang-key="app-washer">غسالة ملابس</option>
+                                    <option value="Washer Heater" data-wattage="2000" data-lang-key="app-washer-heat">غسالة ملابس (سخان)</option>
+                                    <option value="Dishwasher" data-wattage="1200" data-lang-key="app-dishwasher">غسالة أطباق</option>
+                                    <option value="Iron" data-wattage="1000" data-lang-key="app-iron">مكواة ملابس</option>
+                                    <option value="Vacuum" data-wattage="1600" data-lang-key="app-vacuum">مكنسة كهربائية</option>
+                                </optgroup>
+                                <optgroup data-lang-label="cat-kitchen" label="Kitchen / مطبخ">
+                                    <option value="Microwave" data-wattage="1200" data-lang-key="app-microwave">ميكروويف</option>
+                                    <option value="Electric Oven" data-wattage="2000" data-lang-key="app-oven">فرن كهربائي</option>
+                                    <option value="Kettle" data-wattage="1500" data-lang-key="app-kettle">غلاية مياه (كاتل)</option>
+                                    <option value="Blender" data-wattage="400" data-lang-key="app-blender">خلاط</option>
+                                    <option value="Air Fryer" data-wattage="1400" data-lang-key="app-airfryer">قلاية هوائية (Air Fryer)</option>
+                                </optgroup>
+                                <optgroup data-lang-label="cat-lights" label="Lights & Fun / إضاءة وترفيه">
+                                    <option value="LED TV" data-wattage="100" data-lang-key="app-tv-led">تلفزيون LED</option>
+                                    <option value="PC" data-wattage="300" data-lang-key="app-pc">كمبيوتر مكتبي</option>
+                                    <option value="Laptop" data-wattage="60" data-lang-key="app-laptop">لاب توب</option>
+                                    <option value="Lights" data-wattage="40" data-lang-key="app-room-light">إضاءة الغرفة</option>
+                                    <option value="Fan" data-wattage="60" data-lang-key="app-fan">مروحة سقف/مكتب</option>
+                                </optgroup>
+                                <option value="Other" data-wattage="500" data-lang-key="app-other">Other / جهاز آخر</option>
+                            </select>
+                        </div>
+
+                        <!-- Wattage -->
+                        <div class="md:col-span-3">
+                            <label class="block text-slate-600 dark:text-slate-300 text-sm font-semibold mb-2" data-lang-key="onb-wattage-lbl">الاستطاعة (وات)</label>
+                            <div class="input-field rounded-xl px-3 py-3 flex items-center justify-center gap-1">
+                                <input type="number" id="appliance-wattage" class="wattage-edit" placeholder="0" min="1" step="1">
+                                <span class="text-slate-500 dark:text-slate-400 text-xs">W</span>
+                            </div>
+                        </div>
+
+                        <!-- Quantity -->
+                        <div class="md:col-span-2">
+                            <label class="block text-slate-600 dark:text-slate-300 text-sm font-semibold mb-2" data-lang-key="onb-quantity-lbl">الكمية</label>
+                            <input type="number" id="appliance-quantity" class="input-field w-full px-3 py-3 rounded-xl text-slate-900 dark:text-white text-center" value="1" min="1" max="20" step="1">
+                        </div>
+
+                        <!-- Add Button -->
+                        <div class="md:col-span-2">
+                            <button id="btn-add" onclick="addAppliance()" class="w-full bg-gradient-to-r from-brand-600 to-purple-600 hover:from-brand-500 hover:to-purple-500 text-white py-3 rounded-xl font-bold transition transform hover:scale-[1.02] shadow-lg shadow-brand-500/25" data-lang-key="onb-add-btn">
+                                + إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appliance List -->
+                <div id="appliance-list-section">
+                    <h3 class="text-lg font-semibold mb-3" data-lang-key="onb-list-h">الأجهزة المضافة</h3>
+                    <div id="appliance-list" class="space-y-2">
+                        <div class="empty-state rounded-2xl p-8 text-center">
+                            <div class="text-4xl mb-3">🏠</div>
+                            <p class="text-slate-500 dark:text-slate-400" data-lang-key="onb-empty-p1">لم تُضف أي أجهزة بعد.</p>
+                            <p class="text-slate-400 dark:text-slate-500 text-sm mt-1" data-lang-key="onb-empty-p2">اختر جهازاً من القائمة أعلاه واضغط "إضافة"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Summary (2 cols) -->
+            <div class="lg:col-span-2 space-y-6 animate-slide-up" style="animation-delay: 0.1s;">
+                <!-- Summary Card -->
+                <div class="summary-card rounded-2xl p-6 sticky top-24">
+                    <h3 class="text-lg font-bold mb-4" data-lang-key="onb-summary-h">ملخص المنزل</h3>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500 dark:text-slate-400 text-sm" data-lang-key="onb-count-lbl">عدد الأجهزة</span>
+                            <span id="summary-count" class="text-xl font-bold text-slate-900 dark:text-white">0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500 dark:text-slate-400 text-sm" data-lang-key="onb-total-wattage">إجمالي الاستطاعة</span>
+                            <span id="summary-wattage" class="text-xl font-bold text-brand-400">0</span>
+                        </div>
+                        <div class="h-px bg-slate-700/50"></div>
+                        <div>
+                            <span class="text-slate-500 dark:text-slate-400 text-sm" data-lang-key="onb-est-kwh">تقدير استهلاك شهري</span>
+                            <div class="mt-1">
+                                <span id="summary-kwh" class="text-2xl font-bold text-slate-900 dark:text-white">0</span>
+                                <span class="text-slate-500 dark:text-slate-400 text-sm" data-lang-key="unit-kwh"> كيلوواط</span>
+                            </div>
+                        </div>
+                        <div class="h-px bg-slate-700/50"></div>
+                        <div>
+                            <span class="text-slate-500 dark:text-slate-400 text-sm" data-lang-key="onb-est-cost">تقدير التكلفة الشهرية</span>
+                            <div class="mt-1">
+                                <span id="summary-cost" class="text-2xl font-bold text-green-400">0</span>
+                                <span class="text-slate-500 dark:text-slate-400 text-sm" data-lang-key="cost-currency"> جنيه</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <button id="btn-save" onclick="saveAppliances()" disabled class="w-full bg-gradient-to-r from-brand-600 to-purple-600 hover:from-brand-500 hover:to-purple-500 disabled:opacity-30 disabled:cursor-not-allowed text-white py-4 rounded-2xl font-bold text-lg transition transform hover:scale-[1.02] shadow-lg shadow-brand-500/25" data-lang-key="onb-save-btn">
+                    حفظ والمتابعة للوحة التحكم ←
+                </button>
+
+                <button onclick="skipOnboarding()" class="w-full text-slate-500 dark:text-slate-500 hover:text-slate-900 dark:hover:text-slate-300 py-2 text-sm transition" data-lang-key="onb-skip-btn">
+                    تخطي هذه الخطوة ←
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="text-center">
+            <div class="w-12 h-12 border-4 border-brand-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-white font-semibold" data-lang-key="onb-saving">جاري الحفظ...</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = `${window.location.protocol}//${window.location.host}`;
+        const token = localStorage.getItem('access_token');
+        let appliances = [];
+
+        if (!token) window.location.href = '/login';
+
+        async function initUser() {
+            try {
+                const res = await fetch(`${API_URL}/auth/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const userData = await res.json();
+                    const emailEl = document.getElementById('user-email');
+                    if (emailEl) emailEl.textContent = userData.email;
+                }
+                
+                // Fetch existing appliances
+                await fetchAppliances();
+            } catch (e) {}
+        }
+        initUser();
+
+        async function fetchAppliances() {
+            try {
+                const res = await fetch(`${API_URL}/api/appliances`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.length > 0) {
+                        appliances = data.map(item => {
+                            // Try to find the matching lang key from the select options
+                            const select = document.getElementById('appliance-select');
+                            let langKey = null;
+                            if (select) {
+                                const option = Array.from(select.querySelectorAll('option')).find(opt => opt.value === item.name);
+                                if (option) langKey = option.getAttribute('data-lang-key');
+                            }
+                            return {
+                                name: item.name,
+                                langKey: langKey,
+                                wattage: item.wattage,
+                                quantity: item.quantity
+                            };
+                        });
+                        renderList();
+                        updateSummary();
+                    }
+                }
+            } catch (e) {
+                console.error('Failed to fetch appliances:', e);
+            }
+        }
+
+        document.getElementById('appliance-select').addEventListener('change', function() {
+            const option = this.options[this.selectedIndex];
+            const wattage = option.dataset.wattage;
+            if (wattage) document.getElementById('appliance-wattage').value = wattage;
+        });
+
+        function addAppliance() {
+            const select = document.getElementById('appliance-select');
+            const wattageInput = document.getElementById('appliance-wattage');
+            const quantityInput = document.getElementById('appliance-quantity');
+
+            const option = select.options[select.selectedIndex];
+            const name = select.value;
+            const langKey = option.getAttribute('data-lang-key');
+            const wattage = parseFloat(wattageInput.value);
+            const quantity = parseInt(quantityInput.value) || 1;
+
+            if (!name) { alert(Lang.t('error-select-app')); return; }
+            if (!wattage || wattage <= 0) { alert(Lang.t('error-valid-watt')); return; }
+
+            appliances.push({ name, langKey, wattage, quantity });
+            renderList();
+            updateSummary();
+
+            select.value = '';
+            wattageInput.value = '';
+            quantityInput.value = '1';
+        }
+
+        function removeAppliance(index) {
+            appliances.splice(index, 1);
+            renderList();
+            updateSummary();
+        }
+
+        function updateWattage(index, newWattage) {
+            appliances[index].wattage = parseFloat(newWattage) || 0;
+            updateSummary();
+        }
+
+        function updateQuantity(index, newQty) {
+            appliances[index].quantity = parseInt(newQty) || 1;
+            updateSummary();
+        }
+
+        function getPriority(wattage) {
+            if (wattage >= 1500) return 'high';
+            if (wattage >= 500) return 'medium';
+            return 'low';
+        }
+
+        function renderList() {
+            const listEl = document.getElementById('appliance-list');
+            const saveBtn = document.getElementById('btn-save');
+
+            if (appliances.length === 0) {
+                listEl.innerHTML = `
+                    <div class="empty-state rounded-2xl p-8 text-center">
+                        <div class="text-4xl mb-3">🏠</div>
+                        <p class="text-slate-500 dark:text-slate-400">${Lang.t('onb-empty-p1')}</p>
+                        <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">${Lang.t('onb-empty-p2')}</p>
+                    </div>
+                `;
+                saveBtn.disabled = true;
+                return;
+            }
+
+            saveBtn.disabled = false;
+
+            listEl.innerHTML = appliances.map((app, idx) => {
+                const priority = getPriority(app.wattage);
+                const priorityClass = `priority-${priority}`;
+                const priorityLabel = Lang.t(`priority-${priority}`);
+                const totalW = app.wattage * app.quantity;
+
+                return `
+                    <div class="appliance-tag ${priorityClass} rounded-xl p-4 flex items-center gap-4">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-semibold text-slate-900 dark:text-white text-sm truncate">${app.langKey ? Lang.t(app.langKey) : app.name}</span>
+                                <span class="text-xs opacity-80">${priorityLabel}</span>
+                            </div>
+                            <div class="flex items-center gap-4 text-xs text-slate-600 dark:text-slate-400">
+                                <span>${Lang.t('onb-wattage-lbl')}: 
+                                    <input type="number" value="${app.wattage}" 
+                                        onchange="updateWattage(${idx}, this.value)"
+                                        class="wattage-edit text-xs" min="1" step="1"> ${Lang.t('unit-watt')}
+                                </span>
+                                <span>${Lang.t('onb-quantity-lbl')}: 
+                                    <input type="number" value="${app.quantity}" 
+                                        onchange="updateQuantity(${idx}, this.value)"
+                                        class="wattage-edit text-xs" min="1" max="20" step="1">
+                                </span>
+                                <span class="text-brand-400 font-semibold">${Lang.t('onb-total-wattage')}: ${totalW} ${Lang.t('unit-watt')}</span>
+                            </div>
+                        </div>
+                        <button onclick="removeAppliance(${idx})" class="text-red-400 hover:text-red-300 p-2 transition shrink-0">
+                            ✕
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateSummary() {
+            const count = appliances.reduce((sum, a) => sum + a.quantity, 0);
+            const totalW = appliances.reduce((sum, a) => sum + (a.wattage * a.quantity), 0);
+            let monthlyKwh = 0;
+            appliances.forEach(a => {
+                const priority = getPriority(a.wattage);
+                const hoursPerDay = priority === 'high' ? 8 : priority === 'medium' ? 4 : 2;
+                monthlyKwh += (a.wattage * a.quantity * hoursPerDay * 30) / 1000;
+            });
+            const cost = Math.round(monthlyKwh * 1.5);
+
+            document.getElementById('summary-count').textContent = count;
+            document.getElementById('summary-wattage').textContent = totalW.toLocaleString() + ' ' + Lang.t('unit-watt');
+            document.getElementById('summary-kwh').textContent = Math.round(monthlyKwh).toLocaleString();
+            document.getElementById('summary-cost').textContent = cost.toLocaleString();
+        }
+
+        async function saveAppliances() {
+            if (appliances.length === 0) return;
+            document.getElementById('loading-overlay').classList.remove('hidden');
+            const payload = {
+                appliances: appliances.map(a => ({ name: a.name, wattage: a.wattage, quantity: a.quantity }))
+            };
+            try {
+                const res = await fetch(`${API_URL}/api/appliances`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) window.location.href = '/dashboard';
+                else { alert(Lang.t('error-save')); document.getElementById('loading-overlay').classList.add('hidden'); }
+            } catch (e) { alert(Lang.t('error-conn')); document.getElementById('loading-overlay').classList.add('hidden'); }
+        }
+
+        function skipOnboarding() {
+            if (appliances.length > 0 && !confirm(Lang.t('confirm-skip'))) return;
+            window.location.href = '/dashboard';
+        }
+
+        function logout() {
+            localStorage.removeItem('access_token');
+            window.location.href = '/login';
+        }
+    </script>
+<script src="/static/chat-widget.js"></script>
+</body>
+</html>
