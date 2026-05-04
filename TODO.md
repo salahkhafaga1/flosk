@@ -1,12 +1,13 @@
-# TODO.md - Running Project_H Smart Home Energy Monitor
+# Vercel Fix TODO
 
-## Progress Tracker
-### 1. Install Python Dependencies ✅ (already satisfied)
-### 2. Train & Export ML Model ✅ (iforest_model.pkl exists)
-### 3. Start Backend Server (uvicorn) ⏳ [Launcher fixed, retrying python -m uvicorn]
-### 4. Verify Dashboard at http://localhost:8000 ⏳
-### 5. Test Login/Claim/Simulator ⏳
+## Completed
+- [x] Created vercel.json for static frontend deployment (maps / to frontend/static/, fixes routes/caching)
 
-## Notes
-- uvicorn launcher broken (pip reinstall if needed: python -m pip install --force-reinstall uvicorn)
-- Server serves frontend + API + WS + MQTT
+## Next Steps
+1. Install Vercel CLI if needed: `npm i -g vercel`
+2. Login: `vercel login`
+3. Deploy: `vercel --prod`
+4. Test deployed URL (routes: /index.html, /static/lang.js etc.)
+5. Push to GitHub if using Git integration.
+6. Monitor Vercel logs for any remaining 404s.
+7. Optional: Add backend API proxy if needed (e.g., route /api/* to Python functions).
