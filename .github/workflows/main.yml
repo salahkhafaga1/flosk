@@ -1,0 +1,22 @@
+name: Sync to Hugging Face Hub
+on:
+  push:
+    branches: [main] # هيشتغل لما ترفع كودك على فرع main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true # عشان يسحب ملفات الـ LFS لو موجودة
+
+      - name: Sync to Hugging Face
+        uses: huggingface/hub-sync@main # تم تغيير v1.0 إلى main لضمان الوصول للنسخة المستقرة
+        with:
+          github_repo_id: ${{ github.repository }}
+          huggingface_repo_id: salahkhafaga/flosk-energy-detector
+          hf_token: ${{ secrets.HF_TOKEN }}
+          repo_type: space
+          space_sdk: docker
