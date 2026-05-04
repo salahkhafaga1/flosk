@@ -1,13 +1,13 @@
-# Vercel Fix TODO
+# Vercel Fix TODO (Updated: Removed legacy 'builds' to fix warning)
 
 ## Completed
-- [x] Created vercel.json for static frontend deployment (maps / to frontend/static/, fixes routes/caching)
+- [x] Updated vercel.json: Modern config (routes/headers only, no 'builds' warning)
 
 ## Next Steps
-1. Install Vercel CLI if needed: `npm i -g vercel`
-2. Login: `vercel login`
-3. Deploy: `vercel --prod`
-4. Test deployed URL (routes: /index.html, /static/lang.js etc.)
-5. Push to GitHub if using Git integration.
-6. Monitor Vercel logs for any remaining 404s.
-7. Optional: Add backend API proxy if needed (e.g., route /api/* to Python functions).
+1. Install Vercel CLI: `npm i -g vercel`
+2. `vercel login`
+3. Vercel Dashboard: Project Settings > General > Root Directory: `frontend/static`, Framework Preset: Other
+4. `vercel --prod`
+5. Test: / (index.html), /claim.html, /static/lang.js
+6. Push/commit if Git-integrated.
+7. Backend: Separate deploy or add /api/* proxy later.
