@@ -21,6 +21,7 @@ import json
 import logging
 import asyncio
 import secrets
+import sys
 from typing import Dict, Any, List, Optional
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
@@ -32,6 +33,16 @@ from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr
 from typing import List as PyList
+
+# Make the backend directory importable regardless of CWD
+_BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
+if _BACKEND_DIR not in sys.path:
+    sys.path.insert(0, _BACKEND_DIR)
+
+FRONTEND_STATIC = os.path.join(_BACKEND_DIR, "..", "frontend", "static")
+
+
+
 
 from database import init_db, get_db, User as UserModel, Device as DeviceModel, Appliance as ApplianceModel
 from sqlalchemy.orm import Session
@@ -345,9 +356,9 @@ app.add_middleware(
 )
 
 # Serve static frontend files from "static/" directory
-try:
-    app.mount("/static", StaticFiles(directory="../frontend/static"), name="static")
-except RuntimeError:
+if os.path.isdir(FRONTEND_STATIC):
+    app.mount("/static", StaticFiles(directory=FRONTEND_STATIC), name="static")
+else:
     logger.warning('[StaticFiles] "static/" directory not found. Frontend will not be served.')
 
 
@@ -438,7 +449,7 @@ def get_me(current_user: UserModel = Depends(get_current_active_user)):
 @app.get("/claim", response_class=HTMLResponse)
 def claim_page():
     """Serve the device claiming page."""
-    return FileResponse("../frontend/static/claim.html")
+    return FileResponse(os.path.join(FRONTEND_STATIC, "claim.html"))
 
 
 # ---------------------------------------------------------------------------
@@ -519,25 +530,25 @@ def unclaim_device(
 @app.get("/", response_class=HTMLResponse)
 def root():
     """Serve the premium landing page."""
-    return FileResponse("../frontend/static/landing.html")
+    return FileResponse(os.path.join(FRONTEND_STATIC, "landing.html"))
 
 
 @app.get("/login", response_class=HTMLResponse)
 def login_page():
     """Serve the login page."""
-    return FileResponse("../frontend/static/login.html")
+    return FileResponse(os.path.join(FRONTEND_STATIC, "login.html"))
 
 
 @app.get("/onboarding", response_class=HTMLResponse)
 def onboarding_page():
     """Serve the appliance onboarding wizard page."""
-    return FileResponse("../frontend/static/onboarding.html")
+    return FileResponse(os.path.join(FRONTEND_STATIC, "onboarding.html"))
 
 
 @app.get("/dashboard", response_class=HTMLResponse)
 def dashboard_page():
     """Serve the main business dashboard."""
-    return FileResponse("../frontend/static/index.html")
+    return FileResponse(os.path.join(FRONTEND_STATIC, "index.html"))
 
 
 # ---------------------------------------------------------------------------
