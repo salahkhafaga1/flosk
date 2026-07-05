@@ -179,7 +179,7 @@ def validate_payload(raw_payload: str) -> ValidationResult:
     logger.debug(f"[VALIDATION] OK -> {telemetry.device_id} @ {telemetry.timestamp}")
     return ValidationResult(
         is_valid=True,
-        record=telemetry.dict(),
+        record=telemetry.model_dump(),
     )
 
 

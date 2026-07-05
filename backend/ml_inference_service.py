@@ -19,11 +19,15 @@ Architecture:
 
 import os
 import logging
-import pickle
+import joblib
 from typing import Optional, Dict, Any, List
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import IsolationForest
+
+# Resolve model path relative to project root
+_SERVICE_DIR = os.path.dirname(os.path.abspath(__file__))
+_PROJECT_ROOT = os.path.dirname(_SERVICE_DIR)
 
 # ---------------------------------------------------------------------------
 # Logging setup
@@ -37,7 +41,10 @@ logger = logging.getLogger("MLInferenceService")
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-MODEL_PATH = os.environ.get("IFOREST_MODEL_PATH", "isolation_forest_model.pkl")
+MODEL_PATH = os.environ.get(
+    "IFOREST_MODEL_PATH",
+    os.path.join(_PROJECT_ROOT, "ml_models", "iforest_model.pkl"),
+)
 FEATURE_COLS = [
     "voltage", "current", "active_power", "power_factor",
     "apparent_power", "reactive_power",
@@ -91,8 +98,7 @@ class MLInferenceService:
             if not os.path.exists(self.model_path):
                 raise FileNotFoundError(f"Model file not found: {self.model_path}")
 
-            with open(self.model_path, "rb") as f:
-                self.model = pickle.load(f)
+            self.model = joblib.load(self.model_path)
 
             # Sanity check: ensure it's the right type
             if not isinstance(self.model, IsolationForest):

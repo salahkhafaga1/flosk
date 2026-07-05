@@ -27,9 +27,9 @@ import sys
 import json
 import socket
 import logging
-import pickle
+import joblib
 from typing import List, Tuple
-from datetime import datetime
+from datetime import datetime, timezone
 
 import numpy as np
 
@@ -55,7 +55,9 @@ INFLUXDB_ORG = os.environ.get("INFLUXDB_ORG", "my-org")
 FASTAPI_URL = os.environ.get("FASTAPI_URL", "http://localhost:8000")
 FASTAPI_HEALTH_ENDPOINT = f"{FASTAPI_URL}/health"
 
-MODEL_PATH = os.environ.get("MODEL_PATH", "isolation_forest_model.pkl")
+BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(BACKEND_DIR)
+MODEL_PATH = os.environ.get("MODEL_PATH", os.path.join(PROJECT_ROOT, "ml_models", "iforest_model.pkl"))
 CONNECT_TIMEOUT_SEC = 5
 
 
@@ -198,8 +200,7 @@ def check_model_file() -> Tuple[bool, str, str]:
                 f"      import pickle; pickle.dump(model, open('{MODEL_PATH}', 'wb'))",
             )
 
-        with open(MODEL_PATH, "rb") as f:
-            model = pickle.load(f)
+        model = joblib.load(MODEL_PATH)
 
         # Verify it's an IsolationForest-like object
         if not hasattr(model, "predict") or not hasattr(model, "decision_function"):
@@ -330,7 +331,7 @@ def print_report(results: List[Tuple[bool, str, str]]) -> None:
     print("\n" + "=" * 80)
     print("  SYSTEM SANITY CHECK REPORT")
     print("=" * 80)
-    print(f"  Timestamp : {datetime.utcnow().isoformat()}Z")
+    print(f"  Timestamp : {datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')}")
     print(f"  Checks    : {len(results)}")
     print("-" * 80)
 

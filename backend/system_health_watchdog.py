@@ -34,7 +34,7 @@ import socket
 import logging
 import threading
 from typing import Dict, Any
-from datetime import datetime
+from datetime import datetime, timezone
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 
@@ -82,7 +82,7 @@ def check_mqtt_broker(host: str, port: int) -> Dict[str, Any]:
             "latency_ms": round(latency_ms, 2),
             "host": host,
             "port": port,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
     except socket.timeout:
         return {
@@ -91,7 +91,7 @@ def check_mqtt_broker(host: str, port: int) -> Dict[str, Any]:
             "error": "Connection timeout",
             "host": host,
             "port": port,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
     except Exception as exc:
         return {
@@ -100,7 +100,7 @@ def check_mqtt_broker(host: str, port: int) -> Dict[str, Any]:
             "error": str(exc),
             "host": host,
             "port": port,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
 
 
@@ -128,7 +128,7 @@ def check_influxdb(url: str) -> Dict[str, Any]:
                 "latency_ms": round(latency_ms, 2),
                 "db_status": db_status,
                 "url": url,
-                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             }
     except HTTPError as exc:
         return {
@@ -136,7 +136,7 @@ def check_influxdb(url: str) -> Dict[str, Any]:
             "status": "DOWN",
             "error": f"HTTP {exc.code}",
             "url": url,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
     except URLError as exc:
         return {
@@ -144,7 +144,7 @@ def check_influxdb(url: str) -> Dict[str, Any]:
             "status": "DOWN",
             "error": str(exc.reason),
             "url": url,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
     except Exception as exc:
         return {
@@ -152,7 +152,7 @@ def check_influxdb(url: str) -> Dict[str, Any]:
             "status": "DOWN",
             "error": str(exc),
             "url": url,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
 
 
@@ -179,7 +179,7 @@ def check_ml_api(url: str) -> Dict[str, Any]:
                 "latency_ms": round(latency_ms, 2),
                 "ml_status": ml_status,
                 "url": url,
-                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             }
     except HTTPError as exc:
         return {
@@ -187,7 +187,7 @@ def check_ml_api(url: str) -> Dict[str, Any]:
             "status": "DOWN",
             "error": f"HTTP {exc.code}",
             "url": url,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
     except URLError as exc:
         return {
@@ -195,7 +195,7 @@ def check_ml_api(url: str) -> Dict[str, Any]:
             "status": "DOWN",
             "error": str(exc.reason),
             "url": url,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
     except Exception as exc:
         return {
@@ -203,7 +203,7 @@ def check_ml_api(url: str) -> Dict[str, Any]:
             "status": "DOWN",
             "error": str(exc),
             "url": url,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
 
 
@@ -275,7 +275,7 @@ class SystemWatchdog:
         )
 
         report = {
-            "watchdog_timestamp": datetime.utcnow().isoformat() + "Z",
+            "watchdog_timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "overall_status": "HEALTHY" if overall_up else "DEGRADED",
             "checks": snapshot,
         }

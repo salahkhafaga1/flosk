@@ -24,7 +24,7 @@ import secrets
 import sys
 from typing import Dict, Any, List, Optional
 from contextlib import asynccontextmanager
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Depends, status
 from fastapi.staticfiles import StaticFiles
@@ -110,7 +110,10 @@ INFLUXDB_TOKEN = os.environ.get("INFLUXDB_TOKEN", "my-token")
 INFLUXDB_ORG = os.environ.get("INFLUXDB_ORG", "my-org")
 INFLUXDB_BUCKET = os.environ.get("INFLUXDB_BUCKET", "energy_data")
 
-MODEL_PATH = os.environ.get("MODEL_PATH", "isolation_forest_model.pkl")
+MODEL_PATH = os.environ.get(
+    "MODEL_PATH",
+    os.path.join(_BACKEND_DIR, "..", "ml_models", "iforest_model.pkl"),
+)
 
 # ---------------------------------------------------------------------------
 # In-memory stores (for demo / local dev without InfluxDB)
@@ -134,10 +137,11 @@ def get_password_hash(password: str) -> str:
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
+    now = datetime.now(timezone.utc)
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = now + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = now + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -212,7 +216,7 @@ def write_to_influxdb(record: Dict[str, Any]) -> bool:
             .field("reactive_power", float(record.get("Q", 0)))
             .field("anomaly_score", float(record.get("anomaly_score", 0)))
             .field("is_anomaly", bool(record.get("is_anomaly", False)))
-            .time(datetime.utcnow())
+            .time(datetime.now(timezone.utc))
         )
         api.write(bucket=INFLUXDB_BUCKET, org=INFLUXDB_ORG, record=point)
         return True
@@ -496,7 +500,7 @@ def device_status(
         if reading.get("device_id") == device.device_id:
             last_seen = reading.get("timestamp")
             if isinstance(last_seen, (int, float)):
-                online = (datetime.utcnow().timestamp() - last_seen) < 60
+                online = (datetime.now(timezone.utc).timestamp() - last_seen) < 60
             break
 
     return {
@@ -560,7 +564,7 @@ def health() -> Dict[str, Any]:
     """Health check endpoint."""
     return {
         "status": "ok",
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "ml_service": get_ml_service(MODEL_PATH).health(),
         "recent_readings_count": len(recent_readings),
         "mqtt_connected": _mqtt_client is not None and _mqtt_client.is_connected()

@@ -12,7 +12,7 @@ Provides:
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-from datetime import datetime
+from datetime import datetime, timezone
 
 # ---------------------------------------------------------------------------
 # Engine & Session
@@ -46,7 +46,7 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     full_name = Column(String, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
     device = relationship("Device", back_populates="owner", uselist=False)
@@ -71,7 +71,7 @@ class Device(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=False)
     device_id = Column(String, unique=True, index=True, nullable=False)  # ESP32 MAC or custom ID
-    claimed_at = Column(DateTime, default=datetime.utcnow)
+    claimed_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
     owner = relationship("User", back_populates="device")
@@ -96,7 +96,7 @@ class Appliance(Base):
     name = Column(String, nullable=False)
     wattage = Column(Float, nullable=False)
     quantity = Column(Integer, default=1)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
     owner = relationship("User", back_populates="appliances")
