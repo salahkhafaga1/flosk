@@ -20,3 +20,10 @@ jobs:
           hf_token: ${{ secrets.HF_TOKEN }}
           repo_type: space
           space_sdk: docker
+
+      - name: Restart Hugging Face Space
+        shell: bash
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          uvx hf spaces restart salahkhafaga/flosk-energy-detector
