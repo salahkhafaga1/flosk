@@ -13,10 +13,10 @@ jobs:
           lfs: true # عشان يسحب ملفات الـ LFS لو موجودة
 
       - name: Sync to Hugging Face
-        uses: huggingface/hub-sync@v1.0 # تأكد من استخدام أحدث إصدار
+        uses: huggingface/hub-sync@v0.2.0
         with:
           github_repo_id: ${{ github.repository }}
           huggingface_repo_id: salahkhafaga/flosk-energy-detector
           hf_token: ${{ secrets.HF_TOKEN }}
           repo_type: space
-          space_sdk: docker # مهم جداً لأن مشروعك فيه Dockerfile
+          space_sdk: docker
