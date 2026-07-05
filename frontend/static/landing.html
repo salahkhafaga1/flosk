@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>فلوسك - مراقب الطاقة الذكي</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/design-system.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
-            darkMode: 'class', // Enable class-based dark mode
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -16,16 +17,12 @@
                     },
                     colors: {
                         brand: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            200: '#c7d2fe',
-                            300: '#a5b4fc',
-                            400: '#818cf8',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            800: '#3730a3',
-                            900: '#312e81',
+                            50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe',
+                            300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1',
+                            600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81',
+                        },
+                        cyan: {
+                            400: '#22d3ee', 500: '#06b6d4', 600: '#0891b2',
                         }
                     }
                 }
@@ -35,132 +32,213 @@
     <style>
         body { font-family: 'Cairo', sans-serif; }
         .gradient-text {
-            background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+            background: linear-gradient(135deg, #00E5FF 0%, #2563EB 50%, #7C3AED 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         .hero-glow {
-            background: radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            background: radial-gradient(ellipse at 50% 50%, rgba(0,229,255,0.08) 0%, transparent 70%);
         }
         .card-hover {
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(.2,.9,.2,1);
         }
         .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px rgba(0,229,255,0.08);
+            border-color: rgba(0,229,255,0.25) !important;
         }
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-12px); }
         }
-        .float-anim { animation: float 4s ease-in-out infinite; }
+        .float-anim { animation: float 5s ease-in-out infinite; }
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); }
+            0%, 100% { box-shadow: 0 0 20px rgba(0,229,255,0.15), 0 0 40px rgba(0,229,255,0.05); }
+            50% { box-shadow: 0 0 30px rgba(0,229,255,0.25), 0 0 60px rgba(0,229,255,0.1); }
         }
-        .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+        .pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeInUp 0.6s cubic-bezier(.2,.9,.2,1) forwards; }
+        .animate-in-d1 { animation-delay: 0.1s; }
+        .animate-in-d2 { animation-delay: 0.2s; }
+        .animate-in-d3 { animation-delay: 0.3s; }
+        .animate-in-d4 { animation-delay: 0.4s; }
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        .hero-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(0,229,255,0.08);
+            animation: ringExpand 8s ease-in-out infinite;
+        }
+        @keyframes ringExpand {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            inset-inline-start: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00E5FF, #7C3AED);
+            transition: width 0.3s cubic-bezier(.2,.9,.2,1);
+            border-radius: 1px;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .step-connector::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            inset-inline-start: 50%;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,229,255,0.3), transparent);
+            transform: translateX(-50%);
+        }
     </style>
 <script src="/static/lang.js"></script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-x-hidden transition-colors duration-300">
+<body class="bg-slate-50 dark:bg-[#050816] text-slate-900 dark:text-white overflow-x-hidden transition-colors duration-300">
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-cyan-500/5 rounded-full blur-[150px]"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[700px] h-[700px] bg-purple-600/5 rounded-full blur-[120px]"></div>
+        <div class="absolute top-[40%] right-[20%] w-[400px] h-[400px] bg-blue-600/4 rounded-full blur-[100px]"></div>
+        <div class="absolute inset-0 grid-pattern opacity-30"></div>
+    </div>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-purple-600 rounded-xl flex items-center justify-center text-xl">⚡</div>
+    <nav class="fixed top-0 w-full z-50 bg-[#050816]/70 dark:bg-[#050816]/70 backdrop-blur-2xl border-b border-white/5 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center text-xl shadow-lg shadow-cyan-500/20">⚡</div>
                 <span class="text-2xl font-bold gradient-text" data-lang-key="hero-h1-brand">فلوسك</span>
             </div>
-            <div class="hidden md:flex items-center gap-8 text-slate-600 dark:text-slate-300">
-                <a href="#features" class="hover:text-brand-600 dark:hover:text-white transition" data-lang-key="nav-features">المميزات</a>
-                <a href="#how-it-works" class="hover:text-brand-600 dark:hover:text-white transition" data-lang-key="nav-how">كيف يعمل</a>
-                <a href="#pricing" class="hover:text-brand-600 dark:hover:text-white transition" data-lang-key="nav-pricing">الأسعار</a>
+            <div class="hidden md:flex items-center gap-10 text-slate-400 text-sm font-medium">
+                <a href="#features" class="nav-link hover:text-white transition" data-lang-key="nav-features">المميزات</a>
+                <a href="#how-it-works" class="nav-link hover:text-white transition" data-lang-key="nav-how">كيف يعمل</a>
+                <a href="#pricing" class="nav-link hover:text-white transition" data-lang-key="nav-pricing">الأسعار</a>
             </div>
             <div class="flex items-center gap-3">
-                <button onclick="Theme.toggle()" class="flsk-theme-btn flex items-center justify-center w-10 h-10 bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-brand-500 rounded-xl text-lg transition" title="تبديل المظهر">☀️</button>
-                <button id="flsk-lang-btn" onclick="Lang.set(Lang.get()==='ar'?'en':'ar')" class="bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-brand-500 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-white px-4 py-2 rounded-xl text-sm font-semibold transition">🌐 English</button>
-                <a href="/login" class="bg-brand-600 hover:bg-brand-500 text-white px-6 py-2.5 rounded-xl font-semibold transition pulse-glow" data-lang-key="nav-login">تسجيل الدخول</a>
+                <button onclick="Theme.toggle()" class="flsk-theme-btn flex items-center justify-center w-9 h-9 bg-white/5 border border-white/10 hover:border-cyan-500/40 rounded-xl text-sm transition-all hover:bg-white/10" title="تبديل المظهر">☀️</button>
+                <button id="flsk-lang-btn" onclick="Lang.set(Lang.get()==='ar'?'en':'ar')" class="bg-white/5 border border-white/10 hover:border-cyan-500/40 text-slate-400 hover:text-white px-3 py-2 rounded-xl text-xs font-semibold transition-all">🌐 English</button>
+                <a href="/login" class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-6 py-2.5 rounded-xl font-semibold text-sm transition-all hover:shadow-lg hover:shadow-cyan-500/25 pulse-glow" data-lang-key="nav-login">تسجيل الدخول</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center pt-20 hero-glow">
-        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+    <section class="relative min-h-screen flex items-center pt-24 hero-glow overflow-hidden">
+        <!-- Ambient rings -->
+        <div class="absolute top-[20%] left-[10%] w-[300px] h-[300px] hero-ring"></div>
+        <div class="absolute bottom-[30%] right-[15%] w-[200px] h-[200px] hero-ring" style="animation-delay: -3s;"></div>
+        <div class="absolute top-[10%] right-[30%] w-[150px] h-[150px] hero-ring" style="animation-delay: -5s;"></div>
+
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
 
             <!-- Left: Copy -->
             <div class="space-y-8">
-                <div class="inline-flex items-center gap-2 bg-brand-500/10 border border-brand-500/20 text-brand-300 px-4 py-2 rounded-full text-sm">
-                    <span class="w-2 h-2 bg-brand-400 rounded-full animate-pulse"></span>
-                    <span data-lang-key="hero-badge">وفر حتى ٣٠٪ من فاتورة الكهرباء شهرياً</span>
+                <div class="animate-in">
+                    <div class="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 px-4 py-2 rounded-full text-sm backdrop-blur-sm">
+                        <span class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50"></span>
+                        <span data-lang-key="hero-badge">وفر حتى ٣٠٪ من فاتورة الكهرباء شهرياً</span>
+                    </div>
                 </div>
-                <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight">
-                    <span data-lang-key="hero-h1-line1">حمّل</span> <span class="gradient-text" data-lang-key="hero-h1-brand">فلوسك</span><br>
-                    <span data-lang-key="hero-h1-line2">من فواتير الكهرباء</span><br>
-                    <span class="text-slate-500 dark:text-slate-400 text-4xl lg:text-5xl" data-lang-key="hero-h1-sub">قبل ما تروح</span>
-                </h1>
-                <p class="text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg" data-lang-key="hero-desc">
-                    جهاز ذكي واحد يراقب استهلاك بيتك لحظة بلحظة. يكتشف الأعطال قبل ما تحصل، ويحذرك من الأجهزة اللي بتسرق الكهرباء.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="/login" class="bg-gradient-to-r from-brand-600 to-purple-600 hover:from-brand-500 hover:to-purple-500 text-white px-8 py-4 rounded-2xl font-bold text-lg transition transform hover:scale-105 shadow-2xl shadow-brand-500/25" data-lang-key="hero-cta-start">
-                        ابدأ مجاناً 🚀
+                <div class="animate-in animate-in-d1">
+                    <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight tracking-tight">
+                        <span data-lang-key="hero-h1-line1">حمّل</span> <span class="gradient-text" data-lang-key="hero-h1-brand">فلوسك</span><br>
+                        <span data-lang-key="hero-h1-line2">من فواتير الكهرباء</span><br>
+                        <span class="text-slate-500 dark:text-slate-500 text-4xl lg:text-5xl font-bold" data-lang-key="hero-h1-sub">قبل ما تروح</span>
+                    </h1>
+                </div>
+                <div class="animate-in animate-in-d2">
+                    <p class="text-xl text-slate-400 leading-relaxed max-w-lg" data-lang-key="hero-desc">
+                        جهاز ذكي واحد يراقب استهلاك بيتك لحظة بلحظة. يكتشف الأعطال قبل ما تحصل، ويحذرك من الأجهزة اللي بتسرق الكهرباء.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-4 animate-in animate-in-d3">
+                    <a href="/login" class="group bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all transform hover:scale-105 shadow-2xl shadow-cyan-500/25 hover:shadow-cyan-500/40 inline-flex items-center gap-2" data-lang-key="hero-cta-start">
+                        <span>ابدأ مجاناً</span>
+                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                     </a>
-                    <a href="#how-it-works" class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-900 dark:text-white px-8 py-4 rounded-2xl font-bold text-lg transition border border-slate-200 dark:border-slate-700" data-lang-key="hero-cta-learn">
+                    <a href="#how-it-works" class="bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all border border-white/10 hover:border-white/20 backdrop-blur-sm" data-lang-key="hero-cta-learn">
                         اعرف أكتر
                     </a>
                 </div>
-                <div class="flex items-center gap-6 text-slate-500 pt-4">
+                <div class="flex items-center gap-6 text-slate-500 pt-2 animate-in animate-in-d4">
                     <div class="flex -space-x-3 space-x-reverse">
-                        <div class="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full border-2 border-white dark:border-slate-950 flex items-center justify-center text-xs">👤</div>
-                        <div class="w-10 h-10 bg-slate-300 dark:bg-slate-600 rounded-full border-2 border-white dark:border-slate-950 flex items-center justify-center text-xs">👤</div>
-                        <div class="w-10 h-10 bg-slate-400 dark:bg-slate-500 rounded-full border-2 border-white dark:border-slate-950 flex items-center justify-center text-xs">👤</div>
+                        <div class="w-10 h-10 rounded-full border-2 border-[#050816] bg-gradient-to-br from-slate-700 to-slate-600 flex items-center justify-center text-xs text-slate-300">👤</div>
+                        <div class="w-10 h-10 rounded-full border-2 border-[#050816] bg-gradient-to-br from-slate-600 to-slate-500 flex items-center justify-center text-xs text-slate-300">👤</div>
+                        <div class="w-10 h-10 rounded-full border-2 border-[#050816] bg-gradient-to-br from-slate-500 to-slate-400 flex items-center justify-center text-xs text-slate-300">👤</div>
                     </div>
-                    <p class="text-slate-600 dark:text-slate-500" data-lang-key="hero-social">انضم لـ <span class="text-brand-500 dark:text-brand-400 font-bold">+١٠٠٠</span> أسرة مصرية وفّرت فلوسها</p>
+                    <p class="text-slate-500" data-lang-key="hero-social">انضم لـ <span class="text-cyan-400 font-bold">+١٠٠٠</span> أسرة مصرية وفّرت فلوسها</p>
                 </div>
             </div>
 
             <!-- Right: Visual -->
             <div class="relative float-anim">
-                <div class="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-purple-500/20 rounded-3xl blur-3xl"></div>
-                <div class="relative bg-white/90 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-slate-700 rounded-3xl p-8 shadow-2xl shadow-slate-200/50 dark:shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-3xl blur-3xl"></div>
+                <div class="relative bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 shadow-2xl">
                     <!-- Mock Dashboard Card -->
                     <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center gap-3">
-                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-red-500 rounded-full shadow-lg shadow-red-500/30"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full shadow-lg shadow-yellow-500/30"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full shadow-lg shadow-green-500/30"></div>
                         </div>
                         <span class="text-slate-500 text-sm" data-lang-key="hero-card-title">لوحة التحكم</span>
                     </div>
                     <div class="space-y-4">
-                        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-5 border border-slate-200 dark:border-slate-700/50">
+                        <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-5 border border-white/10 hover:border-cyan-500/20 transition-all">
                             <div class="flex justify-between items-center mb-3">
-                                <span class="text-slate-500 dark:text-slate-400" data-lang-key="hero-cost-label">التكلفة التقديرية</span>
-                                <span class="text-green-400 text-sm" data-lang-key="hero-cost-decrease">▼ ٢٣٪</span>
+                                <span class="text-slate-400 text-sm" data-lang-key="hero-cost-label">التكلفة التقديرية</span>
+                                <span class="text-green-400 text-sm font-semibold flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                                    <span data-lang-key="hero-cost-decrease">٢٣٪</span>
+                                </span>
                             </div>
-                            <div class="text-4xl font-bold text-slate-900 dark:text-white" data-lang-key="hero-cost-val">٤٨٥ <span class="text-lg text-slate-500">جنيه</span></div>
-                            <div class="mt-3 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                                <div class="h-full w-3/4 bg-gradient-to-r from-brand-500 to-green-500 rounded-full"></div>
+                            <div class="text-4xl font-bold text-white" data-lang-key="hero-cost-val">٤٨٥ <span class="text-lg text-slate-400">جنيه</span></div>
+                            <div class="mt-3 h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div class="h-full w-3/4 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full"></div>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-200 dark:border-slate-700/50">
-                                <div class="text-slate-500 dark:text-slate-400 text-sm mb-1" data-lang-key="hero-tier-label">الشريحة الحالية</div>
-                                <div class="text-2xl font-bold text-brand-400" data-lang-key="hero-tier-val">الأولى</div>
+                            <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:border-cyan-500/20 transition-all">
+                                <div class="text-slate-400 text-sm mb-1" data-lang-key="hero-tier-label">الشريحة الحالية</div>
+                                <div class="text-2xl font-bold text-cyan-400" data-lang-key="hero-tier-val">الأولى</div>
                             </div>
-                            <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-200 dark:border-slate-700/50">
-                                <div class="text-slate-500 dark:text-slate-400 text-sm mb-1" data-lang-key="hero-health-label">صحة الأجهزة</div>
-                                <div class="text-2xl font-bold text-green-400" data-lang-key="hero-health-val">جيدة ✅</div>
+                            <div class="bg-white/5 backdrop-blur-xl rounded-2xl p-4 border border-white/10 hover:border-cyan-500/20 transition-all">
+                                <div class="text-slate-400 text-sm mb-1" data-lang-key="hero-health-label">صحة الأجهزة</div>
+                                <div class="text-2xl font-bold text-green-400 flex items-center gap-2">
+                                    <span data-lang-key="hero-health-val">جيدة</span>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                </div>
                             </div>
                         </div>
-                        <div class="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-2xl p-4">
+                        <div class="bg-red-500/10 border border-red-500/20 backdrop-blur-xl rounded-2xl p-4">
                             <div class="flex items-center gap-3">
-                                <span class="text-2xl">🚨</span>
+                                <div class="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                                </div>
                                 <div>
-                                    <div class="text-red-600 dark:text-red-400 font-bold" data-lang-key="hero-alert-title">تنبيه ذكي</div>
-                                    <div class="text-red-500 dark:text-red-300/70 text-sm" data-lang-key="hero-alert-desc">التكييف بيسحب طاقة أكتر من المعتاد - يُنصح بالصيانة</div>
+                                    <div class="text-red-400 font-bold text-sm" data-lang-key="hero-alert-title">تنبيه ذكي</div>
+                                    <div class="text-red-300/70 text-xs" data-lang-key="hero-alert-desc">التكييف بيسحب طاقة أكتر من المعتاد - يُنصح بالصيانة</div>
                                 </div>
                             </div>
                         </div>
@@ -172,49 +250,55 @@
     </section>
 
     <!-- Social Proof Bar -->
-    <section class="border-y border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 py-8">
+    <section class="border-y border-white/5 bg-white/[0.02] py-8">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <p class="text-slate-500 mb-4" data-lang-key="proof-label">موثوق من أسر مصرية في</p>
-            <div class="flex flex-wrap justify-center gap-8 text-slate-800 dark:text-white font-bold text-xl">
-                <span data-lang-key="city-cairo">القاهرة</span>
-                <span data-lang-key="city-giza">الجيزة</span>
-                <span data-lang-key="city-alex">الإسكندرية</span>
-                <span data-lang-key="city-mansoura">المنصورة</span>
-                <span data-lang-key="city-tanta">طنطا</span>
-                <span data-lang-key="city-fayoum">الفيوم</span>
+            <p class="text-slate-500 text-sm mb-5" data-lang-key="proof-label">موثوق من أسر مصرية في</p>
+            <div class="flex flex-wrap justify-center gap-10 text-slate-300 font-bold text-lg">
+                <span class="hover:text-cyan-400 transition-colors cursor-default" data-lang-key="city-cairo">القاهرة</span>
+                <span class="hover:text-cyan-400 transition-colors cursor-default" data-lang-key="city-giza">الجيزة</span>
+                <span class="hover:text-cyan-400 transition-colors cursor-default" data-lang-key="city-alex">الإسكندرية</span>
+                <span class="hover:text-cyan-400 transition-colors cursor-default" data-lang-key="city-mansoura">المنصورة</span>
+                <span class="hover:text-cyan-400 transition-colors cursor-default" data-lang-key="city-tanta">طنطا</span>
+                <span class="hover:text-cyan-400 transition-colors cursor-default" data-lang-key="city-fayoum">الفيوم</span>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-24">
+    <section id="features" class="py-24 relative">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4" data-lang-key="features-title">ليه <span class="gradient-text">فلوسك</span>؟</h2>
-                <p class="text-slate-600 dark:text-slate-400 text-xl max-w-2xl mx-auto" data-lang-key="features-sub">مش مجرد عداد كهرباء ذكي — ده مساعد شخصي بيفهم بيتك ويوفر فلوسك</p>
+                <h2 class="text-4xl lg:text-5xl font-bold mb-4" data-lang-key="features-title">ليه <span class="gradient-text">فلوسك</span>؟</h2>
+                <p class="text-slate-400 text-xl max-w-2xl mx-auto" data-lang-key="features-sub">مش مجرد عداد كهرباء ذكي — ده مساعد شخصي بيفهم بيتك ويوفر فلوسك</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-3 gap-6">
                 <!-- Feature 1 -->
-                <div class="card-hover bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-xl shadow-slate-200/50 dark:shadow-none">
-                    <div class="w-16 h-16 bg-green-500/10 rounded-2xl flex items-center justify-center text-3xl mb-6">💰</div>
-                    <h3 class="text-2xl font-bold mb-3" data-lang-key="feat1-title">وفر فلوسك</h3>
-                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed" data-lang-key="feat1-desc">
+                <div class="card-hover bg-white/[0.03] border border-white/10 rounded-3xl p-8 backdrop-blur-xl group">
+                    <div class="w-14 h-14 bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 rounded-2xl flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:border-emerald-500/40 transition-all">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 text-white" data-lang-key="feat1-title">وفر فلوسك</h3>
+                    <p class="text-slate-400 leading-relaxed" data-lang-key="feat1-desc">
                         تعرف بالظبط كل جهاز بيستهلك كام. اكتشف الأجهزة اللي شغالة وراك وبتسرق الكهرباء. وفر حتى ٣٠٪ من قيمة الفاتورة كل شهر.
                     </p>
                 </div>
                 <!-- Feature 2 -->
-                <div class="card-hover bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-xl shadow-slate-200/50 dark:shadow-none">
-                    <div class="w-16 h-16 bg-brand-500/10 rounded-2xl flex items-center justify-center text-3xl mb-6">🛡️</div>
-                    <h3 class="text-2xl font-bold mb-3" data-lang-key="feat2-title">احمي أجهزتك</h3>
-                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed" data-lang-key="feat2-desc">
+                <div class="card-hover bg-white/[0.03] border border-white/10 rounded-3xl p-8 backdrop-blur-xl group">
+                    <div class="w-14 h-14 bg-gradient-to-br from-cyan-500/20 to-blue-600/10 rounded-2xl flex items-center justify-center mb-6 border border-cyan-500/20 group-hover:border-cyan-500/40 transition-all">
+                        <svg class="w-7 h-7 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 text-white" data-lang-key="feat2-title">احمي أجهزتك</h3>
+                    <p class="text-slate-400 leading-relaxed" data-lang-key="feat2-desc">
                         الذكاء الاصطناعي بيراقب صحة كل جهاز في بيتك. لو التكييف أو الثلاجة بدأوا يستهلكوا غير طبيعي، هنحذرك قبل ما يحصل عطل مكلف.
                     </p>
                 </div>
                 <!-- Feature 3 -->
-                <div class="card-hover bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-xl shadow-slate-200/50 dark:shadow-none">
-                    <div class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center text-3xl mb-6">🔮</div>
-                    <h3 class="text-2xl font-bold mb-3" data-lang-key="feat3-title">صيانة قبل العطل</h3>
-                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed" data-lang-key="feat3-desc">
+                <div class="card-hover bg-white/[0.03] border border-white/10 rounded-3xl p-8 backdrop-blur-xl group">
+                    <div class="w-14 h-14 bg-gradient-to-br from-purple-500/20 to-pink-600/10 rounded-2xl flex items-center justify-center mb-6 border border-purple-500/20 group-hover:border-purple-500/40 transition-all">
+                        <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 text-white" data-lang-key="feat3-title">صيانة قبل العطل</h3>
+                    <p class="text-slate-400 leading-relaxed" data-lang-key="feat3-desc">
                         متستناش العطل يحصل. نحن بنتنبأ بالمشاكل قبل ما تبوظ جهازك. استلم تنبيهات زكية بالصيانة الدورية في الوقت المناسب.
                     </p>
                 </div>
@@ -223,27 +307,30 @@
     </section>
 
     <!-- How It Works -->
-    <section id="how-it-works" class="py-24 bg-slate-50 dark:bg-slate-900/30">
-        <div class="max-w-7xl mx-auto px-6">
+    <section id="how-it-works" class="py-24 bg-white/[0.01] border-y border-white/5 relative">
+        <div class="max-w-4xl mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4" data-lang-key="how-title">كيف يعمل؟</h2>
-                <p class="text-slate-600 dark:text-slate-400 text-xl" data-lang-key="how-sub">٣ خطوات بسيطة وانت بتتحكم في فاتورتك</p>
+                <h2 class="text-4xl lg:text-5xl font-bold mb-4" data-lang-key="how-title">كيف يعمل؟</h2>
+                <p class="text-slate-400 text-xl" data-lang-key="how-sub">٣ خطوات بسيطة وانت بتتحكم في فاتورتك</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-gradient-to-br from-brand-500 to-brand-700 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg shadow-brand-500/30">١</div>
-                    <h3 class="text-xl font-bold mb-2" data-lang-key="step1-title">وصل الجهاز</h3>
-                    <p class="text-slate-600 dark:text-slate-400" data-lang-key="step1-desc">جهاز ESP32 صغير بيوصل بلوحة الكهرباء في دقايق. مش محتاج فني.</p>
+            <div class="grid md:grid-cols-3 gap-12 relative">
+                <!-- Connector line -->
+                <div class="hidden md:block absolute top-12 left-[16%] right-[16%] h-px bg-gradient-to-r from-cyan-500/30 via-purple-500/30 to-cyan-500/30"></div>
+                
+                <div class="text-center relative">
+                    <div class="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-xl shadow-cyan-500/20 transform hover:scale-110 transition-all duration-300">١</div>
+                    <h3 class="text-xl font-bold mb-2 text-white" data-lang-key="step1-title">وصل الجهاز</h3>
+                    <p class="text-slate-400 leading-relaxed" data-lang-key="step1-desc">جهاز ESP32 صغير بيوصل بلوحة الكهرباء في دقايق. مش محتاج فني.</p>
                 </div>
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-700 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg shadow-purple-500/30">٢</div>
-                    <h3 class="text-xl font-bold mb-2" data-lang-key="step2-title">سجل أجهزتك</h3>
-                    <p class="text-slate-600 dark:text-slate-400" data-lang-key="step2-desc">اختار أجهزة بيتك من قائمة جاهزة. التطبيق بيعرف كل جهاز بيستهلك كام.</p>
+                <div class="text-center relative">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-xl shadow-purple-500/20 transform hover:scale-110 transition-all duration-300">٢</div>
+                    <h3 class="text-xl font-bold mb-2 text-white" data-lang-key="step2-title">سجل أجهزتك</h3>
+                    <p class="text-slate-400 leading-relaxed" data-lang-key="step2-desc">اختار أجهزة بيتك من قائمة جاهزة. التطبيق بيعرف كل جهاز بيستهلك كام.</p>
                 </div>
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg shadow-green-500/30">٣</div>
-                    <h3 class="text-xl font-bold mb-2" data-lang-key="step3-title">تابع ووفر</h3>
-                    <p class="text-slate-600 dark:text-slate-400" data-lang-key="step3-desc">شوف فاتورتك لحظة بلحظة. استلم تنبيهات ذكية وقرارات مبنية على بيانات حقيقية.</p>
+                <div class="text-center relative">
+                    <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-xl shadow-emerald-500/20 transform hover:scale-110 transition-all duration-300">٣</div>
+                    <h3 class="text-xl font-bold mb-2 text-white" data-lang-key="step3-title">تابع ووفر</h3>
+                    <p class="text-slate-400 leading-relaxed" data-lang-key="step3-desc">شوف فاتورتك لحظة بلحظة. استلم تنبيهات ذكية وقرارات مبنية على بيانات حقيقية.</p>
                 </div>
             </div>
         </div>
@@ -252,32 +339,33 @@
     <!-- Pricing Teaser -->
     <section id="pricing" class="py-24">
         <div class="max-w-4xl mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold mb-4" data-lang-key="price-title">ابدأ <span class="text-green-400">مجاناً</span></h2>
-            <p class="text-slate-600 dark:text-slate-400 text-xl mb-12" data-lang-key="price-sub">جرب فلوسك مجاناً لمدة ١٤ يوم. مش محتاج بطاقة ائتمان.</p>
-            <div class="bg-gradient-to-br from-brand-600 to-purple-700 rounded-3xl p-1">
-                <div class="bg-white dark:bg-slate-950 rounded-3xl p-10">
-                    <div class="text-5xl font-bold mb-2 text-slate-900 dark:text-white" data-lang-key="price-plan">مجاناً</div>
-                    <div class="text-slate-600 dark:text-slate-400 mb-8" data-lang-key="price-after">لمدة ١٤ يوم — بعدها ٩٩ جنيه/شهر</div>
-                    <ul class="text-right space-y-4 mb-8 max-w-md mx-auto text-slate-700 dark:text-white">
-                        <li class="flex items-center gap-3">
-                            <span class="text-green-400 text-xl">✓</span>
+            <h2 class="text-4xl lg:text-5xl font-bold mb-4" data-lang-key="price-title">ابدأ <span class="text-cyan-400">مجاناً</span></h2>
+            <p class="text-slate-400 text-xl mb-12" data-lang-key="price-sub">جرب فلوسك مجاناً لمدة ١٤ يوم. مش محتاج بطاقة ائتمان.</p>
+            <div class="bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-700 rounded-3xl p-[2px] shadow-2xl shadow-cyan-500/20">
+                <div class="bg-[#050816] rounded-3xl p-10">
+                    <div class="text-5xl font-bold mb-2 gradient-text" data-lang-key="price-plan">مجاناً</div>
+                    <div class="text-slate-400 mb-8" data-lang-key="price-after">لمدة ١٤ يوم — بعدها ٩٩ جنيه/شهر</div>
+                    <ul class="text-right space-y-4 mb-8 max-w-md mx-auto">
+                        <li class="flex items-center gap-3 text-slate-300">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             <span data-lang-key="price-f1">مراقبة لحظية لاستهلاك الكهرباء</span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <span class="text-green-400 text-xl">✓</span>
+                        <li class="flex items-center gap-3 text-slate-300">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             <span data-lang-key="price-f2">تنبيهات ذكية للأعطال</span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <span class="text-green-400 text-xl">✓</span>
+                        <li class="flex items-center gap-3 text-slate-300">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             <span data-lang-key="price-f3">تقدير الفاتورة قبل ما تنزل</span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <span class="text-green-400 text-xl">✓</span>
+                        <li class="flex items-center gap-3 text-slate-300">
+                            <svg class="w-5 h-5 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             <span data-lang-key="price-f4">نصائح لتوفير الطاقة</span>
                         </li>
                     </ul>
-                    <a href="/login" class="block w-full bg-gradient-to-r from-brand-600 to-purple-600 hover:from-brand-500 hover:to-purple-500 text-white py-4 rounded-2xl font-bold text-lg transition" data-lang-key="price-cta">
-                        ابدأ تجربتك المجانية
+                    <a href="/login" class="group block w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white py-4 rounded-2xl font-bold text-lg transition-all hover:shadow-xl hover:shadow-cyan-500/25 inline-flex items-center justify-center gap-2" data-lang-key="price-cta">
+                        <span>ابدأ تجربتك المجانية</span>
+                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                     </a>
                 </div>
             </div>
@@ -285,17 +373,17 @@
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-200 dark:border-slate-800 py-12 bg-white dark:bg-slate-950">
+    <footer class="border-t border-white/5 py-12 bg-white/[0.02]">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-gradient-to-br from-brand-500 to-purple-600 rounded-lg flex items-center justify-center text-sm">⚡</div>
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-lg flex items-center justify-center text-sm shadow-lg shadow-cyan-500/20">⚡</div>
                 <span class="text-xl font-bold gradient-text" data-lang-key="hero-h1-brand">فلوسك</span>
             </div>
-            <p class="text-slate-500 dark:text-slate-600" data-lang-key="footer-rights">© ٢٠٢٤ فلوسك. جميع الحقوق محفوظة.</p>
-            <div class="flex gap-6 text-slate-600 dark:text-slate-500">
-                <a href="#" class="hover:text-brand-600 dark:hover:text-white transition" data-lang-key="footer-privacy">الخصوصية</a>
-                <a href="#" class="hover:text-brand-600 dark:hover:text-white transition" data-lang-key="footer-terms">الشروط</a>
-                <a href="#" class="hover:text-brand-600 dark:hover:text-white transition" data-lang-key="footer-support">الدعم</a>
+            <p class="text-slate-500 text-sm" data-lang-key="footer-rights">© ٢٠٢٤ فلوسك. جميع الحقوق محفوظة.</p>
+            <div class="flex gap-8 text-slate-500 text-sm">
+                <a href="#" class="hover:text-cyan-400 transition-colors" data-lang-key="footer-privacy">الخصوصية</a>
+                <a href="#" class="hover:text-cyan-400 transition-colors" data-lang-key="footer-terms">الشروط</a>
+                <a href="#" class="hover:text-cyan-400 transition-colors" data-lang-key="footer-support">الدعم</a>
             </div>
         </div>
     </footer>
@@ -304,7 +392,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('access_token');
             if (token) {
-                // Change Login to Dashboard
                 const navLogin = document.querySelector('[data-lang-key="nav-login"]');
                 if (navLogin) {
                     navLogin.href = '/dashboard';
@@ -313,7 +400,7 @@
                 const heroStart = document.querySelector('[data-lang-key="hero-cta-start"]');
                 if (heroStart) {
                     heroStart.href = '/dashboard';
-                    heroStart.textContent = Lang.get() === 'ar' ? 'اذهب للوحة التحكم 🚀' : 'Go to Dashboard 🚀';
+                    heroStart.textContent = Lang.get() === 'ar' ? 'اذهب للوحة التحكم' : 'Go to Dashboard';
                 }
             }
         });

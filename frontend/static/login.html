@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - فلوسك</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/design-system.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -17,7 +18,8 @@
                             50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe',
                             300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1',
                             600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81',
-                        }
+                        },
+                        cyan: { 400: '#22d3ee', 500: '#06b6d4' }
                     }
                 }
             }
@@ -27,97 +29,136 @@
     <style>
         body { font-family: 'Cairo', sans-serif; }
         .gradient-text {
-            background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+            background: linear-gradient(135deg, #00E5FF 0%, #2563EB 50%, #7C3AED 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
         .glass-card {
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
             transition: all 0.3s ease;
         }
         :is(.dark .glass-card) {
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.15);
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(0, 229, 255, 0.12);
         }
         :is(html:not(.dark) .glass-card) {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.85);
             border: 1px solid rgba(226, 232, 240, 1);
         }
         .input-field {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(.2,.9,.2,1);
         }
-        :is(.dark .input-field) { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); }
+        :is(.dark .input-field) { background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(0, 229, 255, 0.12); color: #fff; }
         :is(html:not(.dark) .input-field) { background: rgba(248, 250, 252, 0.8); border: 1px solid rgba(203, 213, 225, 1); color: #0f172a; }
-        }
         .input-field:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            border-color: #00E5FF;
+            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.12), 0 0 20px rgba(0, 229, 255, 0.05);
             outline: none;
         }
-        .tab-active { border-bottom: 2px solid #6366f1; }
-        :is(.dark .tab-active) { color: white; } :is(html:not(.dark) .tab-active) { color: #0f172a; }
-        .tab-inactive { border-bottom: 2px solid transparent; }
-        :is(.dark .tab-inactive) { color: #94a3b8; } :is(html:not(.dark) .tab-inactive) { color: #64748b; }
-        :is(.dark .tab-inactive:hover) { color: #cbd5e1; } :is(html:not(.dark) .tab-inactive:hover) { color: #334155; }
+        .tab-btn {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            inset-inline-start: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #00E5FF, #7C3AED);
+            transform: scaleX(0);
+            transition: transform 0.3s cubic-bezier(.2,.9,.2,1);
+            border-radius: 1px;
+        }
+        .tab-btn.active::after {
+            transform: scaleX(1);
+        }
+        .tab-btn.active {
+            color: #fff;
+        }
+        .tab-btn:not(.active) {
+            color: #64748b;
+        }
+        .tab-btn:not(.active):hover {
+            color: #94a3b8;
+        }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
         }
         .shake { animation: shake 0.3s ease; }
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .form-fade { animation: fadeUp 0.4s cubic-bezier(.2,.9,.2,1) forwards; }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
+<body class="bg-[#050816] text-white min-h-screen flex items-center justify-center p-4 transition-colors duration-300 overflow-hidden">
+    <!-- Background -->
+    <div class="fixed inset-0 pointer-events-none">
+        <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[120px]"></div>
+        <div class="absolute inset-0 grid-bg opacity-40"></div>
+    </div>
 
-    <div class="w-full max-w-md">
+    <div class="w-full max-w-md relative z-10">
         <!-- Logo -->
         <div class="text-center mb-8">
-            <div class="w-16 h-16 bg-gradient-to-br from-brand-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-lg shadow-brand-500/30">⚡</div>
+            <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-2xl shadow-cyan-500/20">⚡</div>
             <h1 class="text-3xl font-bold gradient-text">فلوسك</h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2" data-lang-key="login-subtitle">سجّل دخولك وابدأ توفير فلوسك</p>
-            <div class="flex justify-center gap-3 mt-3">
-                <button onclick="Theme.toggle()" class="flsk-theme-btn flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-brand-500 rounded-lg text-sm transition" title="تبديل المظهر">☀️</button>
-                <button onclick="Lang.set(Lang.get()==='ar'?'en':'ar')" class="bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-brand-500 text-slate-600 dark:text-slate-400 hover:text-brand-600 dark:hover:text-white px-4 py-1.5 rounded-lg text-sm font-semibold transition" id="flsk-lang-btn">🌐 English</button>
+            <p class="text-slate-400 mt-2 text-sm" data-lang-key="login-subtitle">سجّل دخولك وابدأ توفير فلوسك</p>
+            <div class="flex justify-center gap-3 mt-4">
+                <button onclick="Theme.toggle()" class="flsk-theme-btn flex items-center justify-center w-8 h-8 bg-white/5 border border-white/10 hover:border-cyan-500/40 rounded-lg text-sm transition-all" title="تبديل المظهر">☀️</button>
+                <button onclick="Lang.set(Lang.get()==='ar'?'en':'ar')" id="flsk-lang-btn" class="bg-white/5 border border-white/10 hover:border-cyan-500/40 text-slate-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">🌐 English</button>
             </div>
         </div>
 
         <!-- Card -->
-        <div class="glass-card rounded-3xl p-8 shadow-2xl">
+        <div class="glass-card rounded-3xl p-8 shadow-2xl shadow-black/50">
             <!-- Tabs -->
-            <div class="flex mb-8 border-b border-slate-700">
-                <button id="tab-login" class="flex-1 pb-3 text-center font-semibold tab-active transition" onclick="switchTab('login')" data-lang-key="tab-login">تسجيل الدخول</button>
-                <button id="tab-register" class="flex-1 pb-3 text-center font-semibold tab-inactive transition" onclick="switchTab('register')" data-lang-key="tab-register">حساب جديد</button>
+            <div class="flex mb-8 border-b border-white/5">
+                <button id="tab-login" class="tab-btn active flex-1 pb-3 text-center font-semibold transition" onclick="switchTab('login')" data-lang-key="tab-login">تسجيل الدخول</button>
+                <button id="tab-register" class="tab-btn flex-1 pb-3 text-center font-semibold transition" onclick="switchTab('register')" data-lang-key="tab-register">حساب جديد</button>
             </div>
 
             <!-- Login Form -->
-            <form id="form-login" class="space-y-5">
+            <form id="form-login" class="space-y-5 form-fade">
                 <div>
-                    <label class="block text-slate-600 dark:text-slate-300 text-sm font-semibold mb-2" data-lang-key="lbl-email">البريد الإلكتروني</label>
-                    <input type="email" id="login-email" class="input-field w-full px-4 py-3 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500" placeholder="your@email.com" required>
+                    <label class="block text-slate-300 text-sm font-semibold mb-2" data-lang-key="lbl-email">البريد الإلكتروني</label>
+                    <input type="email" id="login-email" class="input-field w-full px-4 py-3.5 rounded-xl placeholder-slate-500" placeholder="your@email.com" required>
                 </div>
                 <div>
-                    <label class="block text-slate-600 dark:text-slate-300 text-sm font-semibold mb-2" data-lang-key="lbl-password">كلمة المرور</label>
-                    <input type="password" id="login-password" class="input-field w-full px-4 py-3 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500" placeholder="••••••••" required>
+                    <label class="block text-slate-300 text-sm font-semibold mb-2" data-lang-key="lbl-password">كلمة المرور</label>
+                    <input type="password" id="login-password" class="input-field w-full px-4 py-3.5 rounded-xl placeholder-slate-500" placeholder="••••••••" required>
                 </div>
-                <button type="submit" id="btn-login" class="w-full bg-gradient-to-r from-brand-600 to-purple-600 hover:from-brand-500 hover:to-purple-500 text-white py-3.5 rounded-xl font-bold text-lg transition transform hover:scale-[1.02] shadow-lg shadow-brand-500/25" data-lang-key="btn-login">
+                <button type="submit" id="btn-login" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white py-3.5 rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30" data-lang-key="btn-login">
                     دخول
                 </button>
             </form>
 
             <!-- Register Form -->
-            <form id="form-register" class="space-y-5 hidden">
+            <form id="form-register" class="space-y-5 hidden form-fade">
                 <div>
-                    <label class="block text-slate-600 dark:text-slate-300 text-sm font-semibold mb-2" data-lang-key="lbl-name">الاسم الكامل</label>
-                    <input type="text" id="reg-name" class="input-field w-full px-4 py-3 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500" placeholder="محمد أحمد">
+                    <label class="block text-slate-300 text-sm font-semibold mb-2" data-lang-key="lbl-name">الاسم الكامل</label>
+                    <input type="text" id="reg-name" class="input-field w-full px-4 py-3.5 rounded-xl placeholder-slate-500" placeholder="محمد أحمد">
                 </div>
                 <div>
-                    <label class="block text-slate-600 dark:text-slate-300 text-sm font-semibold mb-2" data-lang-key="lbl-email">البريد الإلكتروني</label>
-                    <input type="email" id="reg-email" class="input-field w-full px-4 py-3 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500" placeholder="your@email.com" required>
+                    <label class="block text-slate-300 text-sm font-semibold mb-2" data-lang-key="lbl-email">البريد الإلكتروني</label>
+                    <input type="email" id="reg-email" class="input-field w-full px-4 py-3.5 rounded-xl placeholder-slate-500" placeholder="your@email.com" required>
                 </div>
                 <div>
-                    <label class="block text-slate-600 dark:text-slate-300 text-sm font-semibold mb-2" data-lang-key="lbl-password">كلمة المرور</label>
-                    <input type="password" id="reg-password" class="input-field w-full px-4 py-3 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500" placeholder="••••••••" required minlength="8">
+                    <label class="block text-slate-300 text-sm font-semibold mb-2" data-lang-key="lbl-password">كلمة المرور</label>
+                    <input type="password" id="reg-password" class="input-field w-full px-4 py-3.5 rounded-xl placeholder-slate-500" placeholder="••••••••" required minlength="8">
                 </div>
-                <button type="submit" id="btn-register" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white py-3.5 rounded-xl font-bold text-lg transition transform hover:scale-[1.02] shadow-lg shadow-green-500/25" data-lang-key="btn-register">
+                <button type="submit" id="btn-register" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white py-3.5 rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30" data-lang-key="btn-register">
                     إنشاء حساب
                 </button>
             </form>
@@ -128,7 +169,10 @@
 
         <!-- Back -->
         <div class="text-center mt-6">
-            <a href="/" class="text-slate-500 dark:text-slate-400 hover:text-brand-500 transition text-sm" data-lang-key="back-home">← الرجوع للصفحة الرئيسية</a>
+            <a href="/" class="text-slate-500 hover:text-cyan-400 transition text-sm inline-flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                <span data-lang-key="back-home">الرجوع للصفحة الرئيسية</span>
+            </a>
         </div>
     </div>
 
@@ -142,20 +186,23 @@
             const registerTab = document.getElementById('tab-register');
             if (tab === 'login') {
                 loginForm.classList.remove('hidden'); registerForm.classList.add('hidden');
-                loginTab.classList.add('tab-active'); loginTab.classList.remove('tab-inactive');
-                registerTab.classList.add('tab-inactive'); registerTab.classList.remove('tab-active');
+                loginTab.classList.add('active'); loginTab.classList.remove('active');
+                registerTab.classList.remove('active'); registerTab.classList.add('active');
             } else {
                 loginForm.classList.add('hidden'); registerForm.classList.remove('hidden');
-                registerTab.classList.add('tab-active'); registerTab.classList.remove('tab-inactive');
-                loginTab.classList.add('tab-inactive'); loginTab.classList.remove('tab-active');
+                registerTab.classList.add('active'); registerTab.classList.remove('active');
+                loginTab.classList.remove('active'); loginTab.classList.add('active');
             }
+            // Fix: Ensure the active state class is correct
+            loginTab.classList.toggle('active', tab === 'login');
+            registerTab.classList.toggle('active', tab === 'register');
             hideMsg();
         }
 
         function showMsg(text, isError = true) {
             const box = document.getElementById('msg-box');
             box.textContent = text;
-            box.className = `mt-4 text-center text-sm ${isError ? 'text-red-400' : 'text-green-400'}`;
+            box.className = `mt-4 text-center text-sm ${isError ? 'text-red-400' : 'text-emerald-400'}`;
             box.classList.remove('hidden');
         }
 

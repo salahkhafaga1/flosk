@@ -1,20 +1,44 @@
 /* Smart Home Energy Monitor - Dashboard Styles */
 
 :root {
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-card: #334155;
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --accent-green: #22c55e;
-    --accent-red: #ef4444;
-    --accent-yellow: #eab308;
-    --accent-blue: #3b82f6;
-    --accent-purple: #a855f7;
-    --accent-orange: #f97316;
-    --border-radius: 12px;
-    --transition: all 0.3s ease;
+    /* PrimeReact Atlantis-inspired (clean surfaces + soft borders + vivid blue accent) */
+    --bg-primary: #f6f7fb;
+    --bg-secondary: #ffffff;
+    --bg-card: #f3f4f8;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+
+    --accent-blue: #2563eb;   /* Atlantis vivid blue */
+    --accent-green: #16a34a;
+    --accent-red: #dc2626;
+    --accent-yellow: #d97706;
+    --accent-purple: #7c3aed;
+    --accent-orange: #ea580c;
+
+    --border-radius: 14px;
+    --transition: 160ms ease;
 }
+
+/* Global font + base readability */
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: 'Cairo', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.5;
+    font-size: 14.5px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+input, select, textarea, button {
+    font-family: inherit;
+}
+
 
 * {
     margin: 0;

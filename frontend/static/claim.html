@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-lang-key="claim-title">ربط الجهاز - فلوسك</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/design-system.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -17,7 +18,8 @@
                             50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe',
                             300: '#a5b4fc', 400: '#818cf8', 500: '#6366f1',
                             600: '#4f46e5', 700: '#4338ca', 800: '#3730a3', 900: '#312e81',
-                        }
+                        },
+                        cyan: { 400: '#22d3ee', 500: '#06b6d4' }
                     }
                 }
             }
@@ -26,113 +28,144 @@
     <style>
         body { font-family: 'Cairo', sans-serif; }
         .gradient-text {
-            background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+            background: linear-gradient(135deg, #00E5FF 0%, #2563EB 50%, #7C3AED 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
         .glass-card {
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
             transition: all 0.3s ease;
         }
         :is(.dark .glass-card) {
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(99, 102, 241, 0.15);
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(0, 229, 255, 0.12);
         }
         :is(html:not(.dark) .glass-card) {
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid rgba(226, 232, 240, 1);
         }
         .input-field {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(.2,.9,.2,1);
         }
-        :is(.dark .input-field) { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); }
+        :is(.dark .input-field) { background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(0, 229, 255, 0.12); color: #fff; }
         :is(html:not(.dark) .input-field) { background: rgba(248, 250, 252, 0.8); border: 1px solid rgba(203, 213, 225, 1); color: #0f172a; }
         .input-field:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            border-color: #00E5FF;
+            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.12), 0 0 20px rgba(0, 229, 255, 0.05);
             outline: none;
         }
         .step-card {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(.2,.9,.2,1);
         }
-        :is(.dark .step-card) { background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(99, 102, 241, 0.1); }
+        :is(.dark .step-card) { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(0, 229, 255, 0.08); }
         :is(html:not(.dark) .step-card) { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(226, 232, 240, 1); }
         .step-card:hover {
-            border-color: rgba(99, 102, 241, 0.3);
+            border-color: rgba(0, 229, 255, 0.3);
             transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 229, 255, 0.06);
         }
         :is(.dark .device-mockup) {
-            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
-            border: 2px solid rgba(99, 102, 241, 0.3);
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.1);
+            background: linear-gradient(145deg, rgba(15,23,42,0.8) 0%, rgba(5,8,22,0.9) 100%);
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.05), inset 0 1px 0 rgba(255,255,255,0.05);
         }
         :is(html:not(.dark) .device-mockup) {
             background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
-            border: 2px solid rgba(203, 213, 225, 1);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(203, 213, 225, 1);
         }
         .mac-highlight {
-            background: rgba(99, 102, 241, 0.2);
-            border: 1px dashed #6366f1;
-            animation: pulse-border 2s infinite;
+            background: rgba(0, 229, 255, 0.08);
+            border: 1px dashed rgba(0, 229, 255, 0.3);
+            animation: pulse-border 2s ease-in-out infinite;
         }
         @keyframes pulse-border {
-            0%, 100% { border-color: rgba(99, 102, 241, 0.5); }
-            50% { border-color: rgba(99, 102, 241, 1); }
+            0%, 100% { border-color: rgba(0, 229, 255, 0.3); box-shadow: 0 0 10px rgba(0, 229, 255, 0.05); }
+            50% { border-color: rgba(0, 229, 255, 0.7); box-shadow: 0 0 20px rgba(0, 229, 255, 0.1); }
         }
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-slide-up {
-            animation: slideUp 0.5s ease forwards;
+            animation: slideUp 0.5s cubic-bezier(.2,.9,.2,1) forwards;
         }
         .status-dot {
             width: 8px; height: 8px;
             border-radius: 50%;
             display: inline-block;
         }
-        .status-dot.online { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+        .status-dot.online { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.6); }
         .status-dot.offline { background: #ef4444; }
         .status-dot.pending { background: #eab308; animation: pulse 1.5s infinite; }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; }
         }
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .step-line {
+            position: relative;
+        }
+        .step-line::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            inset-inline-start: 20px;
+            width: 1px;
+            height: calc(100% - 20px);
+            background: linear-gradient(to bottom, rgba(0, 229, 255, 0.2), transparent);
+        }
+        .step-line:last-child::before { display: none; }
+        @keyframes checkmark {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .check-anim { animation: checkmark 0.4s cubic-bezier(.34,1.56,.64,1) forwards; }
     </style>
 <script src="/static/lang.js"></script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white min-h-screen transition-colors duration-300">
+<body class="bg-[#050816] text-white min-h-screen transition-colors duration-300">
+    <!-- Background -->
+    <div class="fixed inset-0 pointer-events-none">
+        <div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyan-500/4 rounded-full blur-[150px]"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/4 rounded-full blur-[120px]"></div>
+        <div class="absolute inset-0 grid-bg opacity-30"></div>
+    </div>
 
     <!-- Header -->
-    <nav class="border-b border-slate-200 dark:border-slate-800/50 backdrop-blur-xl bg-white/80 dark:bg-slate-950/80 sticky top-0 z-50 transition-colors duration-300">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <nav class="relative border-b border-white/5 backdrop-blur-2xl bg-[#050816]/70 sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
             <a href="/" class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-purple-600 rounded-xl flex items-center justify-center text-xl shadow-lg shadow-brand-500/30">⚡</div>
+                <div class="w-9 h-9 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center text-lg shadow-lg shadow-cyan-500/20">⚡</div>
                 <span class="text-xl font-bold gradient-text" data-lang-key="hero-h1-brand">فلوسك</span>
             </a>
             <div class="hidden lg:flex items-center gap-8 mx-8">
-                <a href="/dashboard" class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-600 dark:hover:text-white transition" data-lang-key="nav-dashboard">لوحة التحكم</a>
-                <a href="/claim" class="text-sm font-bold text-slate-900 dark:text-white border-b-2 border-brand-500 pb-1" data-lang-key="nav-connect">ربط الجهاز</a>
-                <a href="/onboarding" class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-brand-600 dark:hover:text-white transition" data-lang-key="nav-appliances">الأجهزة</a>
+                <a href="/dashboard" class="text-sm font-medium text-slate-400 hover:text-white transition" data-lang-key="nav-dashboard">لوحة التحكم</a>
+                <a href="/claim" class="text-sm font-bold text-white border-b-2 border-cyan-500 pb-1" data-lang-key="nav-connect">ربط الجهاز</a>
+                <a href="/onboarding" class="text-sm font-medium text-slate-400 hover:text-white transition" data-lang-key="nav-appliances">الأجهزة</a>
             </div>
             <div class="flex items-center gap-4">
-                <button onclick="Theme.toggle()" class="flsk-theme-btn text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-white text-lg transition" title="تبديل المظهر">☀️</button>
-                <button onclick="Lang.set(Lang.get()==='ar'?'en':'ar')" id="flsk-lang-btn" class="text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-white text-xs font-bold transition">🌐 EN</button>
-                <div class="h-4 w-px bg-slate-700/50"></div>
-                <span id="user-email" class="text-slate-500 dark:text-slate-400 text-xs font-medium truncate max-w-[150px]">...</span>
+                <button onclick="Theme.toggle()" class="flsk-theme-btn text-slate-400 hover:text-white text-base transition" title="تبديل المظهر">☀️</button>
+                <button onclick="Lang.set(Lang.get()==='ar'?'en':'ar')" id="flsk-lang-btn" class="text-slate-400 hover:text-white text-xs font-bold transition">🌐 EN</button>
+                <div class="h-4 w-px bg-white/10"></div>
+                <span id="user-email" class="text-slate-400 text-xs font-medium truncate max-w-[150px]">...</span>
                 <button onclick="logout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg text-xs font-bold transition" data-lang-key="logout-btn">خروج</button>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-4xl mx-auto px-6 py-12">
+    <div class="max-w-4xl mx-auto px-6 py-12 relative z-10">
         <!-- Main Content -->
-        <div class="grid md:grid-cols-2 gap-8">
+        <div class="grid md:grid-cols-2 gap-10">
             <!-- Left: Instructions -->
             <div class="space-y-6 animate-slide-up">
                 <div>
                     <h1 class="text-3xl font-bold mb-3" data-lang-key="claim-title">ربط جهاز ESP32 الخاص بك</h1>
-                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed" data-lang-key="claim-sub">
+                    <p class="text-slate-400 leading-relaxed text-sm" data-lang-key="claim-sub">
                         لعرض بيانات استهلاك الطاقة في منزلك، نحتاج إلى ربط جهاز ESP32 بحسابك. 
                         أدخل معرف الجهاز (MAC Address) أدناه.
                     </p>
@@ -140,25 +173,31 @@
 
                 <!-- Steps -->
                 <div class="space-y-4">
-                    <div class="step-card rounded-2xl p-5 flex gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center text-brand-400 text-lg shrink-0">1</div>
-                        <div>
-                            <h3 class="font-semibold mb-1" data-lang-key="claim-step1-h">افتح Serial Monitor</h3>
-                            <p class="text-slate-500 dark:text-slate-400 text-sm" data-lang-key="claim-step1-p">افتح Arduino IDE أو PlatformIO وشغّل Serial Monitor على baud rate 115200</p>
+                    <div class="step-line">
+                        <div class="step-card rounded-2xl p-5 flex gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-lg shrink-0 border border-cyan-500/20">1</div>
+                            <div>
+                                <h3 class="font-semibold mb-1 text-white" data-lang-key="claim-step1-h">افتح Serial Monitor</h3>
+                                <p class="text-slate-500 text-sm" data-lang-key="claim-step1-p">افتح Arduino IDE أو PlatformIO وشغّل Serial Monitor على baud rate 115200</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="step-card rounded-2xl p-5 flex gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center text-brand-400 text-lg shrink-0">2</div>
-                        <div>
-                            <h3 class="font-semibold mb-1" data-lang-key="claim-step2-h">ابحث عن معرف الجهاز</h3>
-                            <p class="text-slate-500 dark:text-slate-400 text-sm" data-lang-key="claim-step2-p">عند تشغيل ESP32، سيظهر معرف الجهاز في السجل. انسخه بالكامل.</p>
+                    <div class="step-line">
+                        <div class="step-card rounded-2xl p-5 flex gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-lg shrink-0 border border-cyan-500/20">2</div>
+                            <div>
+                                <h3 class="font-semibold mb-1 text-white" data-lang-key="claim-step2-h">ابحث عن معرف الجهاز</h3>
+                                <p class="text-slate-500 text-sm" data-lang-key="claim-step2-p">عند تشغيل ESP32، سيظهر معرف الجهاز في السجل. انسخه بالكامل.</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="step-card rounded-2xl p-5 flex gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center text-brand-400 text-lg shrink-0">3</div>
-                        <div>
-                            <h3 class="font-semibold mb-1" data-lang-key="claim-step3-h">أدخل المعرف هنا</h3>
-                            <p class="text-slate-500 dark:text-slate-400 text-sm" data-lang-key="claim-step3-p">الصق المعرف في الحقل المخصص واضغط "ربط الجهاز"</p>
+                    <div>
+                        <div class="step-card rounded-2xl p-5 flex gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-lg shrink-0 border border-cyan-500/20">3</div>
+                            <div>
+                                <h3 class="font-semibold mb-1 text-white" data-lang-key="claim-step3-h">أدخل المعرف هنا</h3>
+                                <p class="text-slate-500 text-sm" data-lang-key="claim-step3-p">الصق المعرف في الحقل المخصص واضغط "ربط الجهاز"</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -166,31 +205,34 @@
                 <!-- Device Mockup -->
                 <div class="device-mockup rounded-2xl p-6 mt-6">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="text-xs text-slate-400 dark:text-slate-500 font-mono">Serial Monitor</span>
-                        <span class="text-xs text-slate-400 dark:text-slate-500">115200 baud</span>
-                    </div>
-                    <div class="font-mono text-sm space-y-1 text-slate-600 dark:text-slate-300">
-                        <div class="text-slate-400 dark:text-slate-500">[BOOT] ESP32 Energy Anomaly Detector v2.0</div>
-                        <div class="text-slate-400 dark:text-slate-500">[WIFI] Connected, IP: 192.168.1.105</div>
-                        <div class="mac-highlight rounded-lg px-3 py-2 my-2">
-                            <span class="text-brand-400">[DEVICE] ID: </span>
-                            <span class="text-slate-900 dark:text-white font-bold">192.168.1.4</span>
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-green-500 shadow-lg shadow-green-500/50"></div>
+                            <span class="text-xs text-slate-500 font-mono">Serial Monitor</span>
                         </div>
-                        <div class="text-slate-400 dark:text-slate-500">[MQTT] Connected to broker</div>
-                        <div class="text-slate-400 dark:text-slate-500">[SENSOR] PZEM-004T initialized</div>
+                        <span class="text-xs text-slate-500">115200 baud</span>
+                    </div>
+                    <div class="font-mono text-sm space-y-1 text-slate-400">
+                        <div class="text-slate-500">[BOOT] ESP32 Energy Anomaly Detector v2.0</div>
+                        <div class="text-slate-500">[WIFI] Connected, IP: 192.168.1.105</div>
+                        <div class="mac-highlight rounded-lg px-3 py-2 my-2">
+                            <span class="text-cyan-400">[DEVICE] ID: </span>
+                            <span class="text-white font-bold">192.168.1.4</span>
+                        </div>
+                        <div class="text-slate-500">[MQTT] Connected to broker</div>
+                        <div class="text-slate-500">[SENSOR] PZEM-004T initialized</div>
                     </div>
                 </div>
             </div>
 
             <!-- Right: Claim Form -->
             <div class="animate-slide-up" style="animation-delay: 0.1s;">
-                <div class="glass-card rounded-3xl p-8 shadow-2xl">
+                <div class="glass-card rounded-3xl p-8 shadow-2xl shadow-black/50">
                     <div class="text-center mb-8">
-                        <div class="w-20 h-20 bg-gradient-to-br from-brand-500/20 to-purple-600/20 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-4 border border-brand-500/20">
-                            🔌
+                        <div class="w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-purple-600/20 rounded-2xl flex items-center justify-center text-4xl mx-auto mb-4 border border-cyan-500/20 shadow-lg shadow-cyan-500/10">
+                            <svg class="w-9 h-9 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                         </div>
                         <h2 class="text-2xl font-bold mb-2" data-lang-key="claim-step3-h">أدخل معرف الجهاز</h2>
-                        <p class="text-slate-500 dark:text-slate-400 text-sm" data-lang-key="claim-input-ph">المعرف يبدأ عادةً بـ "esp32-" أو يكون عنوان MAC</p>
+                        <p class="text-slate-500 text-sm" data-lang-key="claim-input-ph">المعرف يبدأ عادةً بـ "esp32-" أو يكون عنوان MAC</p>
                     </div>
 
                     <!-- Device Status (shown if already claimed) -->
@@ -199,8 +241,8 @@
                             <div class="flex items-center gap-3">
                                 <span id="status-dot" class="status-dot"></span>
                                 <div>
-                                    <div class="font-semibold text-sm" id="status-device-id"></div>
-                                    <div class="text-xs text-slate-500 dark:text-slate-400" id="status-text"></div>
+                                    <div class="font-semibold text-sm text-white" id="status-device-id"></div>
+                                    <div class="text-xs text-slate-400" id="status-text"></div>
                                 </div>
                             </div>
                             <button onclick="unclaimDevice()" class="text-xs text-red-400 hover:text-red-300 transition" data-lang-key="unclaim-label">إلغاء الربط</button>
@@ -209,21 +251,23 @@
 
                     <form id="claim-form" class="space-y-5">
                         <div>
-                            <label class="block text-slate-600 dark:text-slate-300 text-sm font-semibold mb-2" data-lang-key="claim-input-lbl">معرف الجهاز (Device ID)</label>
-                            <input type="text" id="device-id" class="input-field w-full px-4 py-3 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 font-mono text-sm" data-lang-placeholder="claim-input-ph" placeholder="مثال: esp32-energy-01 أو AA:BB:CC:DD:EE:FF" required>
+                            <label class="block text-slate-300 text-sm font-semibold mb-2" data-lang-key="claim-input-lbl">معرف الجهاز (Device ID)</label>
+                            <input type="text" id="device-id" class="input-field w-full px-4 py-3.5 rounded-xl placeholder-slate-500 font-mono text-sm" data-lang-placeholder="claim-input-ph" placeholder="مثال: esp32-energy-01 أو AA:BB:CC:DD:EE:FF" required>
                         </div>
 
-                        <button type="submit" id="btn-claim" class="w-full bg-gradient-to-r from-brand-600 to-purple-600 hover:from-brand-500 hover:to-purple-500 text-white py-3.5 rounded-xl font-bold text-lg transition transform hover:scale-[1.02] shadow-lg shadow-brand-500/25" data-lang-key="claim-btn">
+                        <button type="submit" id="btn-claim" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white py-3.5 rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30" data-lang-key="claim-btn">
                             ربط الجهاز
                         </button>
                     </form>
 
                     <!-- Success State -->
                     <div id="claim-success" class="hidden text-center py-8">
-                        <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">✅</div>
-                        <h3 class="text-xl font-bold text-green-400 mb-2" data-lang-key="claim-success-h">تم ربط الجهاز بنجاح!</h3>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-6" data-lang-key="claim-success-p">جهازك الآن مرتبط بحسابك. يمكنك الانتقال إلى لوحة التحكم.</p>
-                        <a href="/onboarding" class="inline-block bg-gradient-to-r from-brand-600 to-purple-600 hover:from-brand-500 hover:to-purple-500 text-white px-8 py-3 rounded-xl font-bold transition shadow-lg shadow-brand-500/25" data-lang-key="claim-next-step">
+                        <div class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 check-anim">
+                            <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-emerald-400 mb-2" data-lang-key="claim-success-h">تم ربط الجهاز بنجاح!</h3>
+                        <p class="text-slate-400 text-sm mb-6" data-lang-key="claim-success-p">جهازك الآن مرتبط بحسابك. يمكنك الانتقال إلى لوحة التحكم.</p>
+                        <a href="/onboarding" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-cyan-500/20" data-lang-key="claim-next-step">
                             الخطوة التالية: أجهزة المنزل ←
                         </a>
                     </div>
@@ -232,9 +276,9 @@
                     <div id="msg-box" class="mt-4 text-center text-sm hidden"></div>
 
                     <!-- Demo Skip -->
-                    <div class="mt-6 pt-6 border-t border-slate-700/50 text-center">
-                        <p class="text-slate-500 dark:text-slate-400 text-xs mb-2" data-lang-key="claim-no-device">ليس لديك جهاز بعد؟</p>
-                        <button onclick="useDemoDevice()" class="text-brand-400 hover:text-brand-300 text-sm transition" data-lang-key="claim-demo-btn">
+                    <div class="mt-6 pt-6 border-t border-white/5 text-center">
+                        <p class="text-slate-500 text-xs mb-2" data-lang-key="claim-no-device">ليس لديك جهاز بعد؟</p>
+                        <button onclick="useDemoDevice()" class="text-cyan-400 hover:text-cyan-300 text-sm transition" data-lang-key="claim-demo-btn">
                             استخدم جهاز المحاكاة للتجربة
                         </button>
                     </div>
@@ -247,7 +291,6 @@
         const API_URL = `${window.location.protocol}//${window.location.host}`;
         let currentDevice = null;
 
-        // Check auth on load
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('access_token');
             if (!token) {
@@ -255,7 +298,6 @@
                 return;
             }
 
-            // Fetch real user info
             try {
                 const res = await fetch(`${API_URL}/auth/me`, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -266,7 +308,6 @@
                 }
             } catch (e) {}
 
-            // Check existing device status
             await checkDeviceStatus();
         });
 
@@ -298,16 +339,14 @@
 
             card.classList.remove('hidden');
             card.className = 'mb-6 rounded-xl p-4 border ' + 
-                (data.online ? 'bg-green-500/10 border-green-500/30' : 'bg-yellow-500/10 border-yellow-500/30');
+                (data.online ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-yellow-500/10 border-yellow-500/30');
 
             dot.className = 'status-dot ' + (data.online ? 'online' : 'pending');
             idEl.textContent = data.device_id;
             textEl.textContent = data.online ? Lang.t('status-online') + new Date(data.last_seen).toLocaleTimeString(Lang.get() === 'ar' ? 'ar-SA' : 'en-US') : Lang.t('status-offline');
 
-            // Hide form if device is claimed
             form.classList.add('hidden');
 
-            // Show success with "Go to Dashboard" button
             const successDiv = document.getElementById('claim-success');
             successDiv.classList.remove('hidden');
         }
@@ -315,7 +354,7 @@
         function showMsg(text, isError = true) {
             const box = document.getElementById('msg-box');
             box.textContent = text;
-            box.className = `mt-4 text-center text-sm ${isError ? 'text-red-400' : 'text-green-400'}`;
+            box.className = `mt-4 text-center text-sm ${isError ? 'text-red-400' : 'text-emerald-400'}`;
             box.classList.remove('hidden');
         }
 
@@ -323,7 +362,6 @@
             document.getElementById('msg-box').classList.add('hidden');
         }
 
-        // Claim form submit
         document.getElementById('claim-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             hideMsg();
